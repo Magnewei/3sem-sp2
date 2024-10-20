@@ -1,0 +1,21 @@
+### Get all hotels
+GET http://localhost:7007/api/v1/hotel
+###
+
+### Get a specific hotel by ID
+GET http://localhost:7007/api/v1/hotel/1
+###
+
+### Get rooms by hotel ID
+GET http://localhost:7007/api/v1/hotel/1/rooms
+###
+
+### Create a new hotel
+POST http://localhost:7007/api/v1/hotel
+Content-Type: application/json
+
+{
+  "name": "Hotel 3",
+  "address": "Address 3"
+}
+###
