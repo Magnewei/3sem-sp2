@@ -1,0 +1,26 @@
+@startuml
+
+entity "User" {
+  * id : Integer
+  username : String
+  email : String
+  password : String
+}
+
+entity "Haiku" {
+  * id : Integer
+  content : String
+  author : String
+  dateCreated : LocalDate
+}
+
+entity "HaikuPart" {
+  * id : Integer
+  content : String
+  is5Syllables : Boolean
+}
+
+User ||--o{ Haiku : "writes"
+Haiku ||--o{ HaikuPart : "has parts"
+
+@enduml
