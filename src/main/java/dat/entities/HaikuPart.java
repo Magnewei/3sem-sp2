@@ -16,7 +16,7 @@ import java.util.List;
 @Builder
 @Entity
 @Table(name = "haiku_parts")
-public class HaikuParts {
+public class HaikuPart {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
