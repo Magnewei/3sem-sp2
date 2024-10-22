@@ -1,8 +1,7 @@
 package dat.dtos;
 
-import dat.entities.Haiku;
-import dat.entities.HaikuPart;
-import dat.entities.User;
+import dat.entities.Haiku;;
+import dat.security.entities.User;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 

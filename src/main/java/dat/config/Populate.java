@@ -1,15 +1,11 @@
 package dat.config;
 
 import dat.dtos.HaikuDTO;
-import dat.dtos.HaikuPartsDTO;
+import dat.dtos.HaikuPartDTO;
 import dat.entities.Haiku;
-import dat.entities.HaikuParts;
-import jakarta.persistence.EntityManagerFactory;
 import org.jetbrains.annotations.NotNull;
-import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 
 public class Populate {
     public static void main(String[] args) {
