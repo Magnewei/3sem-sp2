@@ -49,7 +49,7 @@ public class Haiku {
         this.dateCreated=haikuDTO.getDateCreated();
         this.user=haikuDTO.getUser();
         if (haikuDTO.getHaikuParts() != null) {
-            haikuDTO.getHaikuParts().forEach( part -> haikuParts.add(new HaikuParts(part)));
+            haikuDTO.getHaikuParts().forEach( part -> haikuParts.add(new HaikuPart(part)));
         }
     }
 
