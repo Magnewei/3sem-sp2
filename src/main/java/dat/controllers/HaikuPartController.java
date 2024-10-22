@@ -1,52 +1,53 @@
 package dat.controllers;
 
 import dat.config.HibernateConfig;
-import dat.daos.HotelDAO;
-import dat.dtos.HotelDTO;
-import dat.entities.Hotel;
 import io.javalin.http.Context;
 import jakarta.persistence.EntityManagerFactory;
 
 import java.util.List;
 
-public class HotelController implements IController<HotelDTO, Integer> {
+/**
+ * Purpose:
+ *
+ * @Author: Anton Friis Stengaard
+ */
+public class HaikuPartController implements IController{
 
-    private final HotelDAO dao;
+    private final HaikuPartDAO dao;
 
-    public HotelController() {
+    public HaikuPartController() {
         EntityManagerFactory emf = HibernateConfig.getEntityManagerFactory();
-        this.dao = HotelDAO.getInstance(emf);
+        this.dao = HaikuPartDAO.getInstance(emf);
     }
-
     @Override
-    public void read(Context ctx)  {
+    public void read(Context ctx) {
         // request
         int id = ctx.pathParamAsClass("id", Integer.class).check(this::validatePrimaryKey, "Not a valid id").get();
         // DTO
-        HotelDTO hotelDTO = dao.read(id);
+        HaikuPartDTO haikuPartDTO = dao.read(id);
         // response
         ctx.res().setStatus(200);
-        ctx.json(hotelDTO, HotelDTO.class);
+        ctx.json(haikuPartDTO, HaikuPartDTO.class);
     }
 
     @Override
     public void readAll(Context ctx) {
         // List of DTOS
-        List<HotelDTO> hotelDTOS = dao.readAll();
+        List<HaikuPartDTO> haikuPartDTOS = dao.readAll();
         // response
         ctx.res().setStatus(200);
-        ctx.json(hotelDTOS, HotelDTO.class);
+        ctx.json(haikuPartDTOS, HaikuPartDTO.class);
     }
 
     @Override
     public void create(Context ctx) {
         // request
-        HotelDTO jsonRequest = ctx.bodyAsClass(HotelDTO.class);
+        HaikuPartDTO jsonRequest = ctx.bodyAsClass(HaikuPartDTO.class);
         // DTO
-        HotelDTO hotelDTO = dao.create(jsonRequest);
+        HaikuPartDTO haikuPartDTO = dao.create(jsonRequest);
         // response
         ctx.res().setStatus(201);
-        ctx.json(hotelDTO, HotelDTO.class);
+        ctx.json(haikuPartDTO, HaikuPartDTO.class);
     }
 
     @Override
@@ -54,10 +55,10 @@ public class HotelController implements IController<HotelDTO, Integer> {
         // request
         int id = ctx.pathParamAsClass("id", Integer.class).check(this::validatePrimaryKey, "Not a valid id").get();
         // dto
-        HotelDTO hotelDTO = dao.update(id, validateEntity(ctx));
+        HaikuPartDTO haikuPartDTO = dao.update(id, validateEntity(ctx));
         // response
         ctx.res().setStatus(200);
-        ctx.json(hotelDTO, Hotel.class);
+        ctx.json(haikuPartDTO, HaikuPart.class);
     }
 
     @Override
@@ -70,23 +71,15 @@ public class HotelController implements IController<HotelDTO, Integer> {
     }
 
     @Override
-    public boolean validatePrimaryKey(Integer integer) {
+    public boolean validatePrimaryKey(Object o) {
         return dao.validatePrimaryKey(integer);
     }
 
     @Override
-    public HotelDTO validateEntity(Context ctx) {
-        return ctx.bodyValidator(HotelDTO.class)
-                .check( h -> h.getHotelAddress() != null && !h.getHotelAddress().isEmpty(), "Hotel address must be set")
-                .check( h -> h.getHotelName() != null && !h.getHotelName().isEmpty(), "Hotel name must be set")
-                .check( h -> h.getHotelType() != null, "Hotel type must be set")
+    public Object validateEntity(Context ctx) {
+        return ctx.bodyValidator(HaikuDTO.class)
+                .check( h -> h.getHaikuPartContent() != null && !h.getHaikuContent().isEmpty(), "Haiku Part content must be set")
+                .check( h -> h.getHaikuPartIs5Syllables != null, "Haiku Part is 5 syllables must be set")
                 .get();
     }
-
-    public void populate(Context ctx) {
-        dao.populate();
-        ctx.res().setStatus(200);
-        ctx.json("{ \"message\": \"Database has been populated\" }");
-    }
 }
-
