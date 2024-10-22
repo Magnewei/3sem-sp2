@@ -41,7 +41,7 @@ public class Haiku {
             joinColumns = @JoinColumn(name = "haiku_id"), // Column for this entity (Haiku)
             inverseJoinColumns = @JoinColumn(name = "haiku_parts_id") // Column for the other entity (HaikuParts)
     )
-    private List<HaikuParts> haikuParts;
+    private List<HaikuPart> haikuParts;
 
 
 }
