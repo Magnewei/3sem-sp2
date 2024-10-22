@@ -1,5 +1,6 @@
 package dat.config;
 
+import dat.daos.HaikuDAO;
 import dat.dtos.HaikuDTO;
 import dat.dtos.HaikuPartDTO;
 import dat.entities.Haiku;
@@ -14,9 +15,11 @@ public class Populate {
     public static void main(String[] args) {
 
         Haiku haiku = createVanillaHaiku();
-        System.out.println(haiku);
+        EntityManagerFactory emf = HibernateConfig.getEntityManagerFactory();
+        HaikuDAO dao = HaikuDAO.getInstance(emf);
+        dao.create(new HaikuDTO(haiku));
 
-
+        //System.out.println(haiku);
        /* EntityManagerFactory emf = HibernateConfig.getEntityManagerFactory();
 
         Set<Room> calRooms = getCalRooms();
