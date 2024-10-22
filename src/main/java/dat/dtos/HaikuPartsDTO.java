@@ -2,12 +2,15 @@ package dat.dtos;
 
 import java.util.List;
 import java.util.stream.Collectors;
+
+import dat.entities.Haiku;
 import dat.entities.HaikuParts;
 
 public class HaikuPartsDTO {
     private Long id;
     private String content;
     private boolean isFiveSyllables;
+    private List<Haiku> haikus;
 
     public HaikuPartsDTO(HaikuParts haikuParts){
         this.id=haikuParts.getId();

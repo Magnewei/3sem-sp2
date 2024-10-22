@@ -1,6 +1,7 @@
 package dat.dtos;
 
 import dat.entities.Haiku;
+import dat.entities.HaikuParts;
 import dat.entities.User;
 
 import java.time.LocalDate;
@@ -9,7 +10,7 @@ import java.util.stream.Collectors;
 
 public class HaikuDTO {
     private Long id;
-    private List<HaikuPartsDTO> haikuParts;
+    private List<HaikuParts> haikuParts;
     private String author;
     private LocalDate dateCreated;
     private User user;
@@ -23,7 +24,7 @@ public class HaikuDTO {
         this.user = haiku.getUser();
     }
 
-    public HaikuDTO(Long id, List<HaikuPartsDTO> haikuParts, String author, LocalDate dateCreated, User user) {
+    public HaikuDTO(Long id, List<HaikuParts> haikuParts, String author, LocalDate dateCreated, User user) {
         this.id = id;
         this.haikuParts = haikuParts;
         this.author = author;

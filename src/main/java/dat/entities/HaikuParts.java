@@ -26,6 +26,9 @@ public class HaikuParts {
     private Haiku haiku;
 
     @Column(nullable = false)
+    private String content;
+
+    @Column(nullable = false)
     private boolean isFiveSyllables;
 
     @ManyToMany(mappedBy = "haikuParts")
