@@ -13,6 +13,7 @@ public class HaikuDTO {
     private LocalDate dateCreated;
     private User user;
 
+
     public HaikuDTO(Haiku haiku) {
         this.id = haiku.getId();
         this.haikuParts = haiku.getHaikuParts();
