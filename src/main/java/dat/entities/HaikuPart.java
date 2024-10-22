@@ -1,7 +1,6 @@
 package dat.entities;
 
 import dat.dtos.HaikuPartDTO;
-import dat.dtos.HaikuPartsDTO;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;

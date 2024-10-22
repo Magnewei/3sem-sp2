@@ -1,9 +1,8 @@
 package dat.config;
 
 import dat.dtos.HaikuDTO;
-import dat.dtos.HaikuPartsDTO;
+import dat.dtos.HaikuPartDTO;
 import dat.entities.Haiku;
-import dat.entities.HaikuParts;
 import jakarta.persistence.EntityManagerFactory;
 import org.jetbrains.annotations.NotNull;
 import java.math.BigDecimal;
