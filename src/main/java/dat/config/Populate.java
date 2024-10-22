@@ -1,16 +1,24 @@
 package dat.config;
 
-
+import dat.dtos.HaikuDTO;
+import dat.dtos.HaikuPartsDTO;
+import dat.entities.Haiku;
+import dat.entities.HaikuParts;
 import jakarta.persistence.EntityManagerFactory;
 import org.jetbrains.annotations.NotNull;
-
 import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Set;
 
 public class Populate {
     public static void main(String[] args) {
 
-        EntityManagerFactory emf = HibernateConfig.getEntityManagerFactory();
+        Haiku haiku = createVanillaHaiku();
+        System.out.println(haiku);
+
+
+       /* EntityManagerFactory emf = HibernateConfig.getEntityManagerFactory();
 
         Set<Room> calRooms = getCalRooms();
         Set<Room> hilRooms = getHilRooms();
@@ -24,24 +32,23 @@ public class Populate {
             em.persist(california);
             em.persist(hilton);
             em.getTransaction().commit();
-        }
+        }*/
     }
 
     @NotNull
-    private static Set<Room> getCalRooms() {
-        Room r100 = new Room(100, new BigDecimal(2520), Room.RoomType.SINGLE);
-        Room r101 = new Room(101, new BigDecimal(2520), Room.RoomType.SINGLE);
-        Room r102 = new Room(102, new BigDecimal(2520), Room.RoomType.SINGLE);
-        Room r103 = new Room(103, new BigDecimal(2520), Room.RoomType.SINGLE);
-        Room r104 = new Room(104, new BigDecimal(3200), Room.RoomType.DOUBLE);
-        Room r105 = new Room(105, new BigDecimal(4500), Room.RoomType.SUITE);
+    private static Haiku createVanillaHaiku() {
+        List<HaikuPartDTO> haikuParts = new ArrayList<>();
+        haikuParts.add(new HaikuPartDTO("Breath mingles, we burn", true));
+        haikuParts.add(new HaikuPartDTO("Bodies move in sultry waves", false));
+        haikuParts.add(new HaikuPartDTO("Night surrenders slow", true));
 
-        Room[] roomArray = {r100, r101, r102, r103, r104, r105};
-        return Set.of(roomArray);
+        HaikuDTO haiku = new HaikuDTO(0L, haikuParts, "Anonymous", null, null);
+        Haiku haikuEntity = new Haiku(haiku);
+        return haikuEntity;
     }
 
-    @NotNull
-    private static Set<Room> getHilRooms() {
+   /* @NotNull
+    private static List<HaikuPart> getSpicyParts() {
         Room r111 = new Room(111, new BigDecimal(2520), Room.RoomType.SINGLE);
         Room r112 = new Room(112, new BigDecimal(2520), Room.RoomType.SINGLE);
         Room r113 = new Room(113, new BigDecimal(2520), Room.RoomType.SINGLE);
@@ -51,5 +58,5 @@ public class Populate {
 
         Room[] roomArray = {r111, r112, r113, r114, r115, r116};
         return Set.of(roomArray);
-    }
+    }*/
 }

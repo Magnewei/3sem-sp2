@@ -1,5 +1,7 @@
 package dat.entities;
 
+import dat.dtos.HaikuDTO;
+import dat.dtos.HaikuPartsDTO;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -22,8 +24,6 @@ public class Haiku {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false)
-    private String content;
 
     @Column(nullable = false)
     private String author;
@@ -41,7 +41,16 @@ public class Haiku {
             joinColumns = @JoinColumn(name = "haiku_id"), // Column for this entity (Haiku)
             inverseJoinColumns = @JoinColumn(name = "haiku_parts_id") // Column for the other entity (HaikuParts)
     )
-    private List<HaikuParts> haikuParts;
+    private List<HaikuPart> haikuParts;
 
+    public Haiku(HaikuDTO haikuDTO){
+        this.id=haikuDTO.getId();
+        this.author=haikuDTO.getAuthor();
+        this.dateCreated=haikuDTO.getDateCreated();
+        this.user=haikuDTO.getUser();
+        if (haikuDTO.getHaikuParts() != null) {
+            haikuDTO.getHaikuParts().forEach( part -> haikuParts.add(new HaikuParts(part)));
+        }
+    }
 
 }
