@@ -4,12 +4,15 @@ import dat.entities.Haiku;
 import dat.entities.HaikuPart;
 import dat.entities.User;
 import lombok.Data;
+import lombok.NoArgsConstructor;
+
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
 @Data
+@NoArgsConstructor
 public class HaikuDTO {
     private Long id;
     private List<HaikuPartDTO> haikuParts = new ArrayList<>();
@@ -34,6 +37,7 @@ public class HaikuDTO {
         this.dateCreated = dateCreated;
         this.user = user;
     }
+
 
     public static List<HaikuDTO> toHaikuDTOList(List<Haiku> haikus) {
         return haikus.stream().map(HaikuDTO::new).collect(Collectors.toList());

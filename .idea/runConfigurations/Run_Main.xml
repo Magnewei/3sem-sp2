@@ -9,7 +9,7 @@
       <env name="TEST_DB_USERNAME" value="username123" />
     </envs>
     <option name="MAIN_CLASS_NAME" value="app.Main" />
-    <module name="HibernateTemplate" />
+    <module name="3sem_sp2_api" />
     <method v="2">
       <option name="Make" enabled="true" />
     </method>

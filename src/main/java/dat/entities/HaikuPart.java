@@ -1,5 +1,6 @@
 package dat.entities;
 
+import dat.dtos.HaikuPartDTO;
 import dat.dtos.HaikuPartsDTO;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -35,7 +36,7 @@ public class HaikuPart {
     @ManyToMany(mappedBy = "haikuParts")
     private List<Haiku> haikus;
 
-    public HaikuParts(HaikuPartsDTO part) {
+    public HaikuPart(HaikuPartDTO part) {
         this.id = part.getId();
         this.content = part.getContent();
         this.isFiveSyllables = part.isFiveSyllables();
