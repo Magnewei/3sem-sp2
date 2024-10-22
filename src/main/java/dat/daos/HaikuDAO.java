@@ -19,8 +19,8 @@ public class HaikuDAO implements IDAO<HaikuDTO, Integer> {
     private static HaikuDAO instance;
     private static EntityManagerFactory emf;
 
-    Set<HaikuPart> calParts = getCalParts();
-    Set<HaikuPart> hilParts = getHilParts();
+    Set<HaikuPartDTO> calParts = getCalParts();
+    Set<HaikuPartDTO> hilParts = getHilParts();
 
     public static HaikuDAO getInstance(EntityManagerFactory _emf) {
         if (instance == null) {
@@ -62,7 +62,7 @@ public class HaikuDAO implements IDAO<HaikuDTO, Integer> {
         try (EntityManager em = emf.createEntityManager()) {
             em.getTransaction().begin();
             Haiku h = em.find(Haiku.class, integer);
-            h.setHaikuParts(haikuDTO.getHaikuParts());
+            h.setHaikuParts(haikuDTO.getHaikuParts().stream().map(HaikuPart::new).toList());
             h.setAuthor(haikuDTO.getAuthor());
             h.setDateCreated(haikuDTO.getDateCreated());
             Haiku mergedHaiku = em.merge(h);

@@ -77,7 +77,7 @@ public class HaikuPartDAO implements IDAO<HaikuPartDTO, Integer> {
             h.setContent(haikuPartDTO.getContent());
             h.setFiveSyllables(haikuPartDTO.isFiveSyllables());
             h.setHaikus(haikuPartDTO.getHaikus());
-            HaikuPart mergedHaikuPart = em.merge(r);
+            HaikuPart mergedHaikuPart = em.merge(h);
             em.getTransaction().commit();
             return new HaikuPartDTO(mergedHaikuPart);
         }
