@@ -1,7 +1,6 @@
 package dat.config;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import dat.routes.Routes;
 import dat.security.controllers.AccessController;
 import dat.security.controllers.SecurityController;
 import dat.security.enums.Role;
