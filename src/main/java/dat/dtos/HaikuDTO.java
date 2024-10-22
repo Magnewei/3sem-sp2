@@ -8,7 +8,7 @@ import java.util.stream.Collectors;
 
 public class HaikuDTO {
     private Long id;
-    private List<HaikuParts> haikuParts;
+    private List<HaikuPartsDTO> haikuParts;
     private String author;
     private LocalDate dateCreated;
     private User user;
@@ -22,7 +22,16 @@ public class HaikuDTO {
         this.user = haiku.getUser();
     }
 
+    public HaikuDTO(Long id, List<HaikuPartsDTO> haikuParts, String author, LocalDate dateCreated, User user) {
+        this.id = id;
+        this.haikuParts = haikuParts;
+        this.author = author;
+        this.dateCreated = dateCreated;
+        this.user = user;
+    }
+
     public static List<HaikuDTO> toHaikuDTOList(List<Haiku> haikus) {
         return haikus.stream().map(HaikuDTO::new).collect(Collectors.toList());
     }
+
 }
