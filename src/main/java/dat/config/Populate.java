@@ -3,6 +3,9 @@ package dat.config;
 import dat.dtos.HaikuDTO;
 import dat.dtos.HaikuPartDTO;
 import dat.entities.Haiku;
+
+import jakarta.persistence.EntityManagerFactory;
+
 import org.jetbrains.annotations.NotNull;
 import java.util.ArrayList;
 import java.util.List;
