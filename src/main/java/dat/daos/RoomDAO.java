@@ -1,8 +1,6 @@
 package dat.daos;
 
 
-import dat.dtos.HotelDTO;
-import dat.entities.Hotel;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
 import jakarta.persistence.TypedQuery;
