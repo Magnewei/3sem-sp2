@@ -21,4 +21,11 @@ public class ExceptionController {
         ctx.json(new Message(500, e.getMessage()));
     }
 
+    public void exceptionHandler(RuntimeException e, Context ctx) {
+        LOGGER.error(ctx.attribute("requestInfo") + " " + ctx.res().getStatus() + " " + e.getMessage());
+        System.out.println("gg vi er trash");
+        ctx.status(500);
+        ctx.json(new Message(500, e.getMessage()));
+    }
+
 }
