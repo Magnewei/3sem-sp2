@@ -6,7 +6,8 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
+import java.util.List;
 
 
 @Data
@@ -28,11 +29,19 @@ public class Haiku {
     private String author;
 
     @Column(nullable = false)
-    private LocalDateTime dateCreated;
+    private LocalDate dateCreated;
 
     @ManyToOne
     @JoinColumn(name = "user_id")
     private User user;
+
+    @ManyToMany
+    @JoinTable(
+            name = "haiku_haiku_parts", // Join table name
+            joinColumns = @JoinColumn(name = "haiku_id"), // Column for this entity (Haiku)
+            inverseJoinColumns = @JoinColumn(name = "haiku_parts_id") // Column for the other entity (HaikuParts)
+    )
+    private List<HaikuParts> haikuParts;
 
 
 }

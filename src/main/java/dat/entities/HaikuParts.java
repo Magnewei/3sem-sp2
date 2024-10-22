@@ -6,6 +6,8 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
+
 
 @Data
 @NoArgsConstructor
@@ -13,16 +15,19 @@ import lombok.NoArgsConstructor;
 @Builder
 @Entity
 @Table(name = "haiku_parts")
-public class HaikuPart {
+public class HaikuParts {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false)
-    private String content;
-
     @ManyToOne
     @JoinColumn(name = "haiku_id")
     private Haiku haiku;
+
+    @Column(nullable = false)
+    private boolean isFiveSyllables;
+
+    @ManyToMany(mappedBy = "haikuParts")
+    private List<Haiku> haikus;
 }

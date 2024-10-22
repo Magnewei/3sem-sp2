@@ -2,6 +2,7 @@ package dat.dtos;
 
 import java.util.List;
 import java.util.stream.Collectors;
+import dat.entities.HaikuParts;
 
 public class HaikuPartsDTO {
     private Long id;

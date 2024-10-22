@@ -1,6 +1,7 @@
 package dat.dtos;
 
-import dat.entities.Hotel;
+import dat.entities.Haiku;
+import dat.entities.User;
 
 import java.time.LocalDate;
 import java.util.List;
