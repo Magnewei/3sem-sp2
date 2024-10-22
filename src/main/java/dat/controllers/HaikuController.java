@@ -1,6 +1,9 @@
 package dat.controllers;
 
 import dat.config.HibernateConfig;
+import dat.daos.HaikuDAO;
+import dat.dtos.HaikuDTO;
+import dat.entities.Haiku;
 import io.javalin.http.Context;
 import jakarta.persistence.EntityManagerFactory;
 
@@ -11,7 +14,7 @@ import java.util.List;
  *
  * @Author: Anton Friis Stengaard
  */
-public class HaikuController implements IController{
+public class HaikuController implements IController<HaikuDTO, Integer> {
 
     private final HaikuDAO dao;
 
@@ -71,16 +74,16 @@ public class HaikuController implements IController{
     }
 
     @Override
-    public boolean validatePrimaryKey(Object o) {
+    public boolean validatePrimaryKey(Integer integer) {
         return dao.validatePrimaryKey(integer);
     }
 
     @Override
-    public Object validateEntity(Context ctx) {
+    public HaikuDTO validateEntity(Context ctx) {
         return ctx.bodyValidator(HaikuDTO.class)
-                .check( h -> h.getHaikuAuthor() != null && !h.getHaikuAuthor().isEmpty(), "Haiku author must be set")
+                .check( h -> h.getAuthor() != null && !h.getAuthor().isEmpty(), "Haiku author must be set")
                 .check( h -> h.getHaikuParts() != null && !h.getHaikuParts().isEmpty(), "Haiku parts must be set")
-                .check( h -> h.getHaikuDateCreated() != null, "Haiku creation date must be set")
+                .check( h -> h.getDateCreated() != null, "Haiku creation date must be set")
                 .get();
     }
 }
