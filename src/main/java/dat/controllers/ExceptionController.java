@@ -1,4 +1,4 @@
-package dat.controllers.impl;
+package dat.controllers;
 
 import dat.exceptions.ApiException;
 import dat.exceptions.Message;

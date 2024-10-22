@@ -1,13 +1,11 @@
-package dat.controllers.impl;
+package dat.controllers;
 
 import dat.config.HibernateConfig;
-import dat.controllers.IController;
-import dat.daos.impl.HotelDAO;
+import dat.daos.HotelDAO;
 import dat.dtos.HotelDTO;
 import dat.entities.Hotel;
 import io.javalin.http.Context;
 import jakarta.persistence.EntityManagerFactory;
-import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 

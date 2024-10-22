@@ -1,14 +1,11 @@
-package dat.daos.impl;
+package dat.daos;
 
-import dat.daos.IDAO;
 import dat.dtos.HotelDTO;
 import dat.entities.Hotel;
-import dat.entities.Room;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
 import jakarta.persistence.TypedQuery;
 import lombok.NoArgsConstructor;
-import org.jetbrains.annotations.NotNull;
 
 import java.math.BigDecimal;
 import java.util.List;
