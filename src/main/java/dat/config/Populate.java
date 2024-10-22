@@ -1,7 +1,6 @@
 package dat.config;
 
 
-import dat.entities.Hotel;
 import jakarta.persistence.EntityManagerFactory;
 import org.jetbrains.annotations.NotNull;
 
