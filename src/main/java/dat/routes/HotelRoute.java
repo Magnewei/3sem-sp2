@@ -1,6 +1,6 @@
 package dat.routes;
 
-import dat.controllers.impl.HotelController;
+import dat.controllers.HotelController;
 import dat.security.enums.Role;
 import io.javalin.apibuilder.EndpointGroup;
 
