@@ -1,11 +1,12 @@
 package dat.config;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import dat.controllers.ExceptionController;
 import dat.routes.Routes;
 import dat.security.controllers.AccessController;
 import dat.security.controllers.SecurityController;
 import dat.security.enums.Role;
-import dat.security.exceptions.ApiException;
+import dat.exceptions.ApiException;
 import dat.security.routes.SecurityRoutes;
 import dat.utils.Utils;
 import io.javalin.Javalin;
@@ -15,12 +16,12 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 public class ApplicationConfig {
-
     private static Routes routes = new Routes();
     private static ObjectMapper jsonMapper = new Utils().getObjectMapper();
     private static SecurityController securityController = SecurityController.getInstance();
     private static AccessController accessController = new AccessController();
     private static Logger logger = LoggerFactory.getLogger(ApplicationConfig.class);
+    private static ExceptionController exceptionController = new ExceptionController();
     private static int count = 1;
 
     public static void configuration(JavalinConfig config) {
@@ -40,8 +41,10 @@ public class ApplicationConfig {
         app.beforeMatched(ctx -> accessController.accessHandler(ctx));
         app.after(ApplicationConfig::afterRequest);
 
-        app.exception(Exception.class, ApplicationConfig::generalExceptionHandler);
-        app.exception(ApiException.class, ApplicationConfig::apiExceptionHandler);
+        // Exception handling
+        app.exception(Exception.class, exceptionController::generalExceptionHandler);
+        app.exception(ApiException.class, exceptionController::apiExceptionHandler);
+
         app.start(port);
         return app;
     }
@@ -49,20 +52,5 @@ public class ApplicationConfig {
     public static void afterRequest(Context ctx) {
         String requestInfo = ctx.req().getMethod() + " " + ctx.req().getRequestURI();
         logger.info(" Request {} - {} was handled with status code {}", count++, requestInfo, ctx.status());
-    }
-
-    public static void stopServer(Javalin app) {
-        app.stop();
-    }
-
-    private static void generalExceptionHandler(Exception e, Context ctx) {
-        logger.error("An unhandled exception occurred", e.getMessage());
-        ctx.json(Utils.convertToJsonMessage(ctx, "error", e.getMessage()));
-    }
-
-    public static void apiExceptionHandler(ApiException e, Context ctx) {
-        ctx.status(e.getCode());
-        logger.warn("An API exception occurred: Code: {}, Message: {}", e.getCode(), e.getMessage());
-        ctx.json(Utils.convertToJsonMessage(ctx, "warning", e.getMessage()));
     }
 }
