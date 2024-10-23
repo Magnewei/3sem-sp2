@@ -44,6 +44,9 @@ public class Haiku {
     )
     private List<HaikuPart> haikuParts = new ArrayList<>();
 
+    @OneToOne(mappedBy = "haiku")
+    private Rating rating;
+
     public Haiku(HaikuDTO haikuDTO){
         this.id=haikuDTO.getId();
         this.author=haikuDTO.getAuthor();
