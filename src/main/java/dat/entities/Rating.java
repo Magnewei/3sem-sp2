@@ -1,5 +1,7 @@
 package dat.entities;
 
+import dat.dtos.HaikuDTO;
+import dat.dtos.RatingDTO;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -25,4 +27,11 @@ public class Rating {
     @OneToOne
     @JoinColumn(name = "haiku_id")
     private Haiku haiku;
+
+
+    public Rating(RatingDTO ratingDTO, Haiku haiku){
+        this.id=ratingDTO.getId();
+        this.rating=ratingDTO.getRating();
+        this.haiku = haiku;
+    }
 }
