@@ -1,17 +1,13 @@
 package dat.daos;
 
-import dat.dtos.HaikuDTO;
-import dat.dtos.HaikuPartDTO;
 import dat.dtos.RatingDTO;
 import dat.entities.Haiku;
-import dat.entities.HaikuPart;
 import dat.entities.Rating;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
 import jakarta.persistence.TypedQuery;
 
 import java.util.List;
-import java.util.Set;
 
 public class RatingDAO implements IDAO<RatingDTO, Integer> {
 
@@ -67,7 +63,7 @@ public class RatingDAO implements IDAO<RatingDTO, Integer> {
         try (EntityManager em = emf.createEntityManager()) {
             em.getTransaction().begin();
             Rating h = em.find(Rating.class, integer);
-            h.setRating(ratingDTO.getRating());
+            h.setScore(ratingDTO.getScore());
 
             Rating mergedRating = em.merge(h);
             em.getTransaction().commit();

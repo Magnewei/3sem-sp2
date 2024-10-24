@@ -1,11 +1,9 @@
 package dat.controllers;
 
 import dat.config.HibernateConfig;
-import dat.daos.HaikuPartDAO;
 import dat.daos.RatingDAO;
 import dat.dtos.HaikuPartDTO;
 import dat.dtos.RatingDTO;
-import dat.entities.HaikuPart;
 import dat.entities.Rating;
 import io.javalin.http.Context;
 import jakarta.persistence.EntityManagerFactory;
@@ -80,7 +78,7 @@ public class RatingController implements IController<RatingDTO, Integer> {
     @Override
     public RatingDTO validateEntity(Context ctx) {
         return ctx.bodyValidator(RatingDTO.class)
-                .check(h -> h.getRating() >= 0 && h.getRating() <= 10, "Rating must be between 0 and 10")
+                .check(h -> h.getScore() >= 0 && h.getScore() <= 10, "Rating must be between 0 and 10")
                 .get();
     }
 
