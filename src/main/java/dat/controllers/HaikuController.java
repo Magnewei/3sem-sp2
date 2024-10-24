@@ -22,6 +22,7 @@ public class HaikuController implements IController<HaikuDTO, Integer> {
         EntityManagerFactory emf = HibernateConfig.getEntityManagerFactory();
         this.dao = HaikuDAO.getInstance(emf);
     }
+
     @Override
     public void read(Context ctx) {
         // request
