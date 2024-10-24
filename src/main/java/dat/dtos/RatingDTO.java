@@ -1,10 +1,16 @@
 package dat.dtos;
 
 import dat.entities.Rating;
+import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
+@Data
+@Getter
+@Setter
 public class RatingDTO {
     private Long id;
     private double rating;
