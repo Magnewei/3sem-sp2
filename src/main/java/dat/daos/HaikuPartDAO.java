@@ -102,5 +102,4 @@ public class HaikuPartDAO implements IDAO<HaikuPartDTO, Integer> {
             return haikuPart != null;
         }
     }
-
 }
