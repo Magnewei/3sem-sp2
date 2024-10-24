@@ -43,7 +43,7 @@ public class HibernateConfig {
         configuration.addAnnotatedClass(dat.entities.HaikuPart.class);
         configuration.addAnnotatedClass(dat.entities.Rating.class);
         configuration.addAnnotatedClass(dat.entities.Collection.class);
-        configuration.addAnnotatedClass(User.class);
+        configuration.addAnnotatedClass(User.class);  // User entity taken from Security package.
         configuration.addAnnotatedClass(Role.class);
     }
 
