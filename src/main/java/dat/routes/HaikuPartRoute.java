@@ -12,7 +12,7 @@ public class HaikuPartRoute {
     protected EndpointGroup getRoutes() {
 
         return () -> {
-            post("/hotel/{id}", haikuPartController::create);
+            post("/haiku/{id}", haikuPartController::create);
             get("/", haikuPartController::readAll);
             get("/{id}", haikuPartController::read);
             put("/{id}", haikuPartController::update);
