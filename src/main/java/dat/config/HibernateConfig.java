@@ -49,6 +49,7 @@ public class HibernateConfig {
         configuration.addAnnotatedClass(Collection.class);
         configuration.addAnnotatedClass(User.class);  // User entity taken from Security layer.
         configuration.addAnnotatedClass(Role.class);
+        
     }
 
     private static EntityManagerFactory createEMF(boolean forTest) {
