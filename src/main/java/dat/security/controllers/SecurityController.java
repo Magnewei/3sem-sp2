@@ -101,6 +101,7 @@ public class SecurityController implements ISecurityController {
                 return;
             }
             String header = ctx.header("Authorization");
+            System.out.println("Header: " + header);
             if (header == null) {
                 throw new UnauthorizedResponse("Authorization header missing");
             }
