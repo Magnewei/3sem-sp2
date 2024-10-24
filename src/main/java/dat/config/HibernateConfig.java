@@ -41,6 +41,8 @@ public class HibernateConfig {
     private static void getAnnotationConfiguration(Configuration configuration) {
         configuration.addAnnotatedClass(dat.entities.Haiku.class);
         configuration.addAnnotatedClass(dat.entities.HaikuPart.class);
+        configuration.addAnnotatedClass(dat.entities.Rating.class);
+        configuration.addAnnotatedClass(dat.entities.Collection.class);
         configuration.addAnnotatedClass(User.class);
         configuration.addAnnotatedClass(Role.class);
     }
