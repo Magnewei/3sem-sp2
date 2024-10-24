@@ -4,37 +4,32 @@ import dat.daos.HaikuDAO;
 import dat.dtos.HaikuDTO;
 import dat.dtos.HaikuPartDTO;
 import dat.entities.Haiku;
-
+import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
-
 import org.jetbrains.annotations.NotNull;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
 public class Populate {
     public static void main(String[] args) {
-
-        Haiku haiku = createVanillaHaiku();
         EntityManagerFactory emf = HibernateConfig.getEntityManagerFactory();
-        HaikuDAO dao = HaikuDAO.getInstance(emf);
-        dao.create(new HaikuDTO(haiku));
+        EntityManager em = emf.createEntityManager();
 
-        //System.out.println(haiku);
-       /* EntityManagerFactory emf = HibernateConfig.getEntityManagerFactory();
-
-        Set<Room> calRooms = getCalRooms();
-        Set<Room> hilRooms = getHilRooms();
-
-        try (var em = emf.createEntityManager()) {
+        try {
             em.getTransaction().begin();
-            Hotel california = new Hotel("Hotel California", "California", Hotel.HotelType.LUXURY);
-            Hotel hilton = new Hotel("Hilton", "Copenhagen", Hotel.HotelType.STANDARD);
-            california.setRooms(calRooms);
-            hilton.setRooms(hilRooms);
-            em.persist(california);
-            em.persist(hilton);
+            Haiku haiku = createVanillaHaiku();
+            HaikuDAO dao = HaikuDAO.getInstance(emf);
+            dao.create(new HaikuDTO(haiku));
             em.getTransaction().commit();
-        }*/
+        } catch (Exception e) {
+            if (em.getTransaction().isActive()) {
+                em.getTransaction().rollback();
+            }
+            e.printStackTrace();
+        } finally {
+            em.close();
+        }
     }
 
     @NotNull
@@ -44,21 +39,7 @@ public class Populate {
         haikuParts.add(new HaikuPartDTO("Bodies move in sultry waves", false));
         haikuParts.add(new HaikuPartDTO("Night surrenders slow", true));
 
-        HaikuDTO haiku = new HaikuDTO(0L, haikuParts, "Anonymous", null, null);
-        Haiku haikuEntity = new Haiku(haiku);
-        return haikuEntity;
+        HaikuDTO haiku = new HaikuDTO(0L, haikuParts, "Gods lesson", LocalDate.now(), null);
+        return new Haiku(haiku);
     }
-
-   /* @NotNull
-    private static List<HaikuPart> getSpicyParts() {
-        Room r111 = new Room(111, new BigDecimal(2520), Room.RoomType.SINGLE);
-        Room r112 = new Room(112, new BigDecimal(2520), Room.RoomType.SINGLE);
-        Room r113 = new Room(113, new BigDecimal(2520), Room.RoomType.SINGLE);
-        Room r114 = new Room(114, new BigDecimal(2520), Room.RoomType.DOUBLE);
-        Room r115 = new Room(115, new BigDecimal(3200), Room.RoomType.DOUBLE);
-        Room r116 = new Room(116, new BigDecimal(4500), Room.RoomType.SUITE);
-
-        Room[] roomArray = {r111, r112, r113, r114, r115, r116};
-        return Set.of(roomArray);
-    }*/
 }
