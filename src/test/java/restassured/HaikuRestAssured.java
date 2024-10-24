@@ -2,14 +2,14 @@ package restassured;
 
 import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
-import io.restassured.response.Response;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
 import static io.restassured.RestAssured.*;
 import static org.hamcrest.Matchers.*;
 
-public class HaikuEndpointTests {
+public class HaikuRestAssured {
+
     @BeforeAll
     public static void setup() {
         RestAssured.baseURI = "http://localhost:8080/api"; // Change this to your server's base URI

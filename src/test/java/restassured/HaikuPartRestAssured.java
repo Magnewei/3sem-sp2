@@ -8,7 +8,7 @@ import org.junit.jupiter.api.Test;
 import static io.restassured.RestAssured.*;
 import static org.hamcrest.Matchers.*;
 
-public class HaikuPartEndpointTests {
+public class HaikuPartRestAssured {
 
     @BeforeAll
     public static void setup() {
