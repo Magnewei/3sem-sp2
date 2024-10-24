@@ -13,7 +13,7 @@ import lombok.Setter;
 @Setter
 @Builder
 public class HaikuPartDTO {
-    private long id;
+    private Long id;
     private String content;
     private boolean isFiveSyllables;
     private List<Haiku> haikus;
