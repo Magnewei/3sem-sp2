@@ -1,21 +1,63 @@
-### Get all hotels
-GET http://localhost:7007/api/v1/hotel
-###
+### Get all haikus
+GET haiku.antonstengaard.dk/api/haikus
 
-### Get a specific hotel by ID
-GET http://localhost:7007/api/v1/hotel/1
-###
-
-### Get rooms by hotel ID
-GET http://localhost:7007/api/v1/hotel/1/rooms
-###
-
-### Create a new hotel
-POST http://localhost:7007/api/v1/hotel
+### Create a new user
+POST haiku.antonstengaard.dk/api/auth/register
 Content-Type: application/json
 
 {
-  "name": "Hotel 3",
-  "address": "Address 3"
+  "username": "newuser",
+  "password": "securepassword"
 }
-###
+
+### Login request
+POST haiku.antonstengaard.dk/api/auth/login
+Content-Type: application/json
+
+{
+  "username": "newuser",
+  "password": "securepassword"
+}
+
+> {%
+    client.global.set("jwt_token", response.body.token);
+    console.log("JWT Token:", client.global.get("jwt_token"));
+%}
+
+### Add admin role to the user
+POST haiku.antonstengaard.dk/api/auth/user/addrole
+Content-Type: application/json
+Authorization: Bearer {{jwt_token}}
+
+{
+  "role": "admin"
+}
+
+### Create a new haiku
+POST haiku.antonstengaard.dk/api/haikus
+Content-Type: application/json
+Accept: application/json
+Authorization: Bearer {{jwt_token}}
+
+{
+  "author": "Author Name",
+  "dateCreated": "2023-10-01",
+  "user": {
+    "id": 1,
+    "username": "newuser"
+  },
+  "haikuParts": [
+    {
+      "id": 1,
+      "content": "First part of the haiku"
+    },
+    {
+      "id": 2,
+      "content": "Second part of the haiku"
+    },
+    {
+      "id": 3,
+      "content": "Third part of the haiku"
+    }
+  ]
+}
