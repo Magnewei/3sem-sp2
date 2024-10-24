@@ -13,7 +13,7 @@ public class HaikuRoute {
     protected EndpointGroup getRoutes() {
 
         return () -> {
-            post("/", haikuController::create, Role.USER);
+            post("/", haikuController::create, Role.ANYONE);
             get("/", haikuController::readAll);
             get("/{id}", haikuController::read);
             put("/{id}", haikuController::update);
