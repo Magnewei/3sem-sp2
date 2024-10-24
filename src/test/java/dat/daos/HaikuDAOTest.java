@@ -18,12 +18,16 @@ class HaikuDAOTest {
     private static EntityManagerFactory emf;
     private static HaikuDAO haikuDAO;
     private HaikuDTO haikuDTO;
-/*
+
     @BeforeAll
     static void beforeAll() {
+        System.setProperty("DOCKER_HOST", "unix:///var/run/docker.sock");
+        System.setProperty("testcontainers.checks.disable", "true");
+        System.setProperty("org.testcontainers.logging", "WARN");
         emf = HibernateConfig.getEntityManagerFactoryForTest();
         haikuDAO = HaikuDAO.getInstance(emf);
     }
+
 
     @BeforeEach
     void setUp() {
@@ -60,6 +64,7 @@ class HaikuDAOTest {
         assertThat(fetchedHaikuDTO.getAuthor(), is("Test Author"));
         assertThat(fetchedHaikuDTO.getHaikuParts(), hasSize(2));
     }
+    /*
 
     @Test
     void readAll() {

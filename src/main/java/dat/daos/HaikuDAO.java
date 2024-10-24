@@ -3,6 +3,7 @@ package dat.daos;
 import dat.dtos.HaikuDTO;
 import dat.entities.Haiku;
 import dat.entities.HaikuPart;
+import dat.exceptions.DatabaseException;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
 import jakarta.persistence.TypedQuery;
@@ -12,7 +13,6 @@ import java.util.List;
 
 @NoArgsConstructor(access = lombok.AccessLevel.PRIVATE)
 public class HaikuDAO implements IDAO<HaikuDTO, Integer> {
-
     private static HaikuDAO instance;
     private static EntityManagerFactory emf;
 
@@ -29,6 +29,8 @@ public class HaikuDAO implements IDAO<HaikuDTO, Integer> {
         try (EntityManager em = emf.createEntityManager()) {
             Haiku haiku = em.find(Haiku.class, integer);
             return new HaikuDTO(haiku);
+        } catch (Exception e) {
+            throw new DatabaseException(500, "Error reading haiku from the database", e.getCause());
         }
     }
 
@@ -37,6 +39,8 @@ public class HaikuDAO implements IDAO<HaikuDTO, Integer> {
         try (EntityManager em = emf.createEntityManager()) {
             TypedQuery<HaikuDTO> query = em.createQuery("SELECT new dat.dtos.HaikuDTO(h) FROM Haiku h", HaikuDTO.class);
             return query.getResultList();
+        } catch (Exception e) {
+            throw new DatabaseException(500, "Error reading haikus from the database", e.getCause());
         }
     }
 
@@ -55,12 +59,11 @@ public class HaikuDAO implements IDAO<HaikuDTO, Integer> {
                 }
             }
 
-            Haiku mergedHaiku = em.merge(haiku); // Use merge instead of persist
+            Haiku mergedHaiku = em.merge(haiku); 
             em.getTransaction().commit();
-            return new HaikuDTO(mergedHaiku);
+            return new HaikuDTO(haiku);
         } catch (Exception e) {
-            e.printStackTrace();
-            throw new RuntimeException("Could not create haiku");
+            throw new DatabaseException(500, "Error creating haiku", e.getCause());
         }
     }
 
@@ -69,12 +72,17 @@ public class HaikuDAO implements IDAO<HaikuDTO, Integer> {
         try (EntityManager em = emf.createEntityManager()) {
             em.getTransaction().begin();
             Haiku h = em.find(Haiku.class, integer);
+            if (h == null) {
+                throw new DatabaseException(404, "Haiku not found for update", null);
+            }
             h.setHaikuParts(haikuDTO.getHaikuParts().stream().map(HaikuPart::new).toList());
             h.setAuthor(haikuDTO.getAuthor());
             h.setDateCreated(haikuDTO.getDateCreated());
             Haiku mergedHaiku = em.merge(h);
             em.getTransaction().commit();
-            return mergedHaiku != null ? new HaikuDTO(mergedHaiku) : null;
+            return new HaikuDTO(mergedHaiku);
+        } catch (Exception e) {
+            throw new DatabaseException(500, "Error updating haiku", e.getCause());
         }
     }
 
@@ -83,10 +91,13 @@ public class HaikuDAO implements IDAO<HaikuDTO, Integer> {
         try (EntityManager em = emf.createEntityManager()) {
             em.getTransaction().begin();
             Haiku haiku = em.find(Haiku.class, integer);
-            if (haiku != null) {
-                em.remove(haiku);
+            if (haiku == null) {
+                throw new DatabaseException(404, "Haiku not found for deletion", null);
             }
+            em.remove(haiku);
             em.getTransaction().commit();
+        } catch (Exception e) {
+            throw new DatabaseException(500, "Error deleting haiku", e.getCause());
         }
     }
 
@@ -95,6 +106,9 @@ public class HaikuDAO implements IDAO<HaikuDTO, Integer> {
         try (EntityManager em = emf.createEntityManager()) {
             Haiku haiku = em.find(Haiku.class, integer);
             return haiku != null;
+        } catch (Exception e) {
+            throw new DatabaseException(500, "Error validating primary key", e.getCause());
         }
     }
 }
+
