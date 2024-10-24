@@ -9,11 +9,6 @@ import jakarta.persistence.EntityManagerFactory;
 
 import java.util.List;
 
-/**
- * Purpose:
- *
- * @Author: Anton Friis Stengaard
- */
 public class HaikuController implements IController<HaikuDTO, Integer> {
 
     private final HaikuDAO dao;
@@ -25,53 +20,36 @@ public class HaikuController implements IController<HaikuDTO, Integer> {
 
     @Override
     public void read(Context ctx) {
-        // request
         int id = ctx.pathParamAsClass("id", Integer.class).check(this::validatePrimaryKey, "Not a valid id").get();
-        // DTO
         HaikuDTO haikuDTO = dao.read(id);
-        // response
-        ctx.res().setStatus(200);
-        ctx.json(haikuDTO, HaikuDTO.class);
+        ctx.json(haikuDTO);
     }
 
     @Override
     public void readAll(Context ctx) {
-        // List of DTOS
         List<HaikuDTO> haikuDTOS = dao.readAll();
-        // response
-        ctx.res().setStatus(200);
-        ctx.json(haikuDTOS, HaikuDTO.class);
+        ctx.json(haikuDTOS);
     }
 
     @Override
     public void create(Context ctx) {
-        // request
         HaikuDTO jsonRequest = ctx.bodyAsClass(HaikuDTO.class);
-        // DTO
         HaikuDTO haikuDTO = dao.create(jsonRequest);
-        // response
-        ctx.res().setStatus(201);
-        ctx.json(haikuDTO, HaikuDTO.class);
+        ctx.status(201).json(haikuDTO);
     }
 
     @Override
     public void update(Context ctx) {
-        // request
         int id = ctx.pathParamAsClass("id", Integer.class).check(this::validatePrimaryKey, "Not a valid id").get();
-        // dto
         HaikuDTO haikuDTO = dao.update(id, validateEntity(ctx));
-        // response
-        ctx.res().setStatus(200);
-        ctx.json(haikuDTO, Haiku.class);
+        ctx.json(haikuDTO);
     }
 
     @Override
     public void delete(Context ctx) {
-        // request
         int id = ctx.pathParamAsClass("id", Integer.class).check(this::validatePrimaryKey, "Not a valid id").get();
         dao.delete(id);
-        // response
-        ctx.res().setStatus(204);
+        ctx.status(204);
     }
 
     @Override
@@ -79,17 +57,12 @@ public class HaikuController implements IController<HaikuDTO, Integer> {
         return dao.validatePrimaryKey(integer);
     }
 
-
-    /**
-     * Validates the HaikuDTO entity from the request body.
-     * If any validation fails, a 400 Bad Request response is returned with an error message.
-     */
     @Override
     public HaikuDTO validateEntity(Context ctx) {
         return ctx.bodyValidator(HaikuDTO.class)
-                .check( h -> h.getAuthor() != null && !h.getAuthor().isEmpty(), "Haiku author must be set")
-                .check( h -> h.getHaikuParts() != null && !h.getHaikuParts().isEmpty(), "Haiku parts must be set")
-                .check( h -> h.getDateCreated() != null, "Haiku creation date must be set")
+                .check(h -> h.getAuthor() != null && !h.getAuthor().isEmpty(), "Haiku author must be set")
+                .check(h -> h.getHaikuParts() != null && !h.getHaikuParts().isEmpty(), "Haiku parts must be set")
+                .check(h -> h.getDateCreated() != null, "Haiku creation date must be set")
                 .get();
     }
 }

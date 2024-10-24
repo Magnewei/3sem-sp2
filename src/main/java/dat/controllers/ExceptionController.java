@@ -29,7 +29,7 @@ public class ExceptionController {
     public void databaseExceptionHandler(DatabaseException e, Context ctx) {
         logger.error(ctx.attribute("requestInfo") + " " + ctx.res().getStatus() + " " + e.getMessage(), e.getCause());
         ctx.status(e.getStatusCode());
-        ctx.json(new ErrorMessage(e.getStatusCode(), e.getMessage()));
+        ctx.json(new ErrorMessage(e.getStatusCode(), (e.getMessage() + "Error: " + e.getErrorMessage())));
     }
 
 
