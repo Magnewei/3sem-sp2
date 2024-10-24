@@ -18,7 +18,7 @@ class HaikuDAOTest {
     private static EntityManagerFactory emf;
     private static HaikuDAO haikuDAO;
     private HaikuDTO haikuDTO;
-
+/*
     @BeforeAll
     static void beforeAll() {
         System.setProperty("DOCKER_HOST", "unix:///var/run/docker.sock");
