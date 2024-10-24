@@ -1,12 +1,8 @@
 package dat.daos;
 
-import dat.daos.HaikuPartDAO;
 import dat.dtos.HaikuDTO;
-import dat.entities.Haiku;
-import dat.entities.HaikuPart;
 import dat.dtos.HaikuPartDTO;
 import dat.config.HibernateConfig;
-import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
@@ -15,7 +11,8 @@ import org.junit.jupiter.api.Test;
 
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.*;
 
 class HaikuPartDAOTest {
     private static EntityManagerFactory emf;
@@ -48,18 +45,17 @@ class HaikuPartDAOTest {
     void read() {
         HaikuPartDTO fetchedHaikuPart = haikuPartDAO.read(haikuPartDTO.getId().intValue());
 
-        assertNotNull(fetchedHaikuPart);
-        assertEquals("Test Line", fetchedHaikuPart.getContent());
-        assertTrue(fetchedHaikuPart.isFiveSyllables());
+        assertThat(fetchedHaikuPart, is(notNullValue()));
+        assertThat(fetchedHaikuPart.getContent(), is("Test Line"));
+        assertThat(fetchedHaikuPart.isFiveSyllables(), is(true));
     }
 
     @Test
     void readAll() {
         List<HaikuPartDTO> haikuParts = haikuPartDAO.readAll();
 
-        assertNotNull(haikuParts);
-        assertFalse(haikuParts.isEmpty());
-        assertTrue(haikuParts.stream().anyMatch(h -> h.getId().equals(haikuPartDTO.getId())));
+        assertThat(haikuParts, is(not(empty())));
+        assertThat(haikuParts, hasItem(hasProperty("id", equalTo(haikuPartDTO.getId()))));
     }
 
     @Test
@@ -71,9 +67,10 @@ class HaikuPartDAOTest {
 
         HaikuPartDTO createdHaikuPart = haikuPartDAO.create(newHaikuPartDTO);
 
-        assertNotNull(createdHaikuPart);
-        assertEquals("New Line", createdHaikuPart.getContent());
-        assertFalse(createdHaikuPart.isFiveSyllables());
+        assertThat(createdHaikuPart, is(notNullValue()));
+        assertThat(createdHaikuPart.getContent(), is("New Line"));
+        assertThat(createdHaikuPart.isFiveSyllables(), is(false));
+
         haikuPartDAO.delete(createdHaikuPart.getId().intValue());
     }
 
@@ -84,9 +81,9 @@ class HaikuPartDAOTest {
 
         HaikuPartDTO updatedHaikuPart = haikuPartDAO.update(haikuPartDTO.getId().intValue(), haikuPartDTO);
 
-        assertNotNull(updatedHaikuPart);
-        assertEquals("Updated Line", updatedHaikuPart.getContent());
-        assertFalse(updatedHaikuPart.isFiveSyllables());
+        assertThat(updatedHaikuPart, is(notNullValue()));
+        assertThat(updatedHaikuPart.getContent(), is("Updated Line"));
+        assertThat(updatedHaikuPart.isFiveSyllables(), is(false));
     }
 
     @Test
@@ -94,7 +91,7 @@ class HaikuPartDAOTest {
         haikuPartDAO.delete(haikuPartDTO.getId().intValue());
 
         HaikuPartDTO deletedHaikuPart = haikuPartDAO.read(haikuPartDTO.getId().intValue());
-        assertNull(deletedHaikuPart);
+        assertThat(deletedHaikuPart, is(nullValue()));
     }
 
     @Test
@@ -107,8 +104,8 @@ class HaikuPartDAOTest {
 
         HaikuDTO updatedHaikuDTO = haikuPartDAO.addHaikuPartToHaiku(newHaikuDTO.getId().intValue(), newHaikuPartDTO);
 
-        assertNotNull(updatedHaikuDTO);
-        assertEquals(1, updatedHaikuDTO.getHaikuParts().size());
-        assertEquals("Additional Line", updatedHaikuDTO.getHaikuParts().get(0).getContent());
+        assertThat(updatedHaikuDTO, is(notNullValue()));
+        assertThat(updatedHaikuDTO.getHaikuParts(), hasSize(1));
+        assertThat(updatedHaikuDTO.getHaikuParts().get(0).getContent(), is("Additional Line"));
     }
 }

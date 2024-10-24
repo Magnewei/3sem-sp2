@@ -3,8 +3,6 @@ package dat.daos;
 import dat.config.HibernateConfig;
 import dat.dtos.HaikuDTO;
 import dat.dtos.HaikuPartDTO;
-import dat.entities.Haiku;
-import dat.entities.HaikuPart;
 import jakarta.persistence.EntityManagerFactory;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
@@ -13,7 +11,8 @@ import org.junit.jupiter.api.Test;
 
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.*;
 
 class HaikuDAOTest {
     private static EntityManagerFactory emf;
@@ -57,18 +56,17 @@ class HaikuDAOTest {
     void read() {
         HaikuDTO fetchedHaikuDTO = haikuDAO.read(haikuDTO.getId().intValue());
 
-        assertNotNull(fetchedHaikuDTO);
-        assertEquals("Test Author", fetchedHaikuDTO.getAuthor());
-        assertEquals(2, fetchedHaikuDTO.getHaikuParts().size());
+        assertThat(fetchedHaikuDTO, is(notNullValue()));
+        assertThat(fetchedHaikuDTO.getAuthor(), is("Test Author"));
+        assertThat(fetchedHaikuDTO.getHaikuParts(), hasSize(2));
     }
 
     @Test
     void readAll() {
         List<HaikuDTO> haikus = haikuDAO.readAll();
 
-        assertNotNull(haikus);
-        assertFalse(haikus.isEmpty());
-        assertTrue(haikus.stream().anyMatch(h -> h.getId().equals(haikuDTO.getId())));
+        assertThat(haikus, is(not(empty())));
+        assertThat(haikus, hasItem(hasProperty("id", equalTo(haikuDTO.getId()))));
     }
 
     @Test
@@ -90,9 +88,9 @@ class HaikuDAOTest {
 
         HaikuDTO createdHaiku = haikuDAO.create(newHaikuDTO);
 
-        assertNotNull(createdHaiku);
-        assertEquals("New Author", createdHaiku.getAuthor());
-        assertEquals(2, createdHaiku.getHaikuParts().size());
+        assertThat(createdHaiku, is(notNullValue()));
+        assertThat(createdHaiku.getAuthor(), is("New Author"));
+        assertThat(createdHaiku.getHaikuParts(), hasSize(2));
 
         haikuDAO.delete(createdHaiku.getId().intValue());
     }
@@ -102,8 +100,8 @@ class HaikuDAOTest {
         haikuDTO.setAuthor("Updated Author");
         HaikuDTO updatedHaiku = haikuDAO.update(haikuDTO.getId().intValue(), haikuDTO);
 
-        assertNotNull(updatedHaiku);
-        assertEquals("Updated Author", updatedHaiku.getAuthor());
+        assertThat(updatedHaiku, is(notNullValue()));
+        assertThat(updatedHaiku.getAuthor(), is("Updated Author"));
     }
 
     @Test
@@ -111,6 +109,7 @@ class HaikuDAOTest {
         haikuDAO.delete(haikuDTO.getId().intValue());
 
         HaikuDTO deletedHaiku = haikuDAO.read(haikuDTO.getId().intValue());
-        assertNull(deletedHaiku);
+        assertThat(deletedHaiku, is(nullValue()));
     }
 }
+
