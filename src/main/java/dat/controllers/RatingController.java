@@ -6,7 +6,9 @@ import dat.dtos.RatingDTO;
 import dat.entities.Rating;
 import io.javalin.http.Context;
 import jakarta.persistence.EntityManagerFactory;
+import org.jetbrains.annotations.NotNull;
 
+import java.util.Comparator;
 import java.util.List;
 
 public class RatingController implements IController<RatingDTO, Integer> {
@@ -62,5 +64,29 @@ public class RatingController implements IController<RatingDTO, Integer> {
         return ctx.bodyValidator(RatingDTO.class)
                 .check(r -> r.getScore() >= 0 && r.getScore() <= 10, "Rating must be between 0 and 10")
                 .get();
+    }
+
+    public void sortByPopularity(@NotNull Context context) {
+        List<RatingDTO> ratings = dao.readAll();
+        ratings.sort(Comparator.comparingDouble(RatingDTO::getScore).reversed());
+        context.json(ratings);
+    }
+
+    public void sortByOriginality(@NotNull Context context) {
+        List<RatingDTO> ratings = dao.readAll();
+        ratings.sort(Comparator.comparingDouble(RatingDTO::getOriginality).reversed());
+        context.json(ratings);
+    }
+
+    public void sortBySpicyness(@NotNull Context context) {
+        List<RatingDTO> ratings = dao.readAll();
+        ratings.sort(Comparator.comparingDouble(RatingDTO::getSpicyness).reversed());
+        context.json(ratings);
+    }
+
+    public void getLowestRated(@NotNull Context context) {
+        List<RatingDTO> ratings = dao.readAll();
+        ratings.sort(Comparator.comparingDouble(RatingDTO::getScore));
+        context.json(ratings);
     }
 }
