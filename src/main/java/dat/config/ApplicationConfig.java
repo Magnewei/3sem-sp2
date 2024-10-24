@@ -2,6 +2,7 @@ package dat.config;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import dat.controllers.ExceptionController;
+import dat.exceptions.DatabaseException;
 import dat.routes.Routes;
 import dat.security.controllers.AccessController;
 import dat.security.controllers.SecurityController;
@@ -44,6 +45,7 @@ public class ApplicationConfig {
         // Exception handling
         app.exception(Exception.class, exceptionController::generalExceptionHandler);
         app.exception(ApiException.class, exceptionController::apiExceptionHandler);
+        app.exception(DatabaseException.class, exceptionController::databaseExceptionHandler);
 
         app.start(port);
         return app;
