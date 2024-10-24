@@ -1,6 +1,5 @@
 package dat.entities;
 
-import dat.dtos.HaikuDTO;
 import dat.dtos.RatingDTO;
 import jakarta.persistence.*;
 import lombok.*;
@@ -16,7 +15,7 @@ public class Rating {
     private long id;
 
     @Column(nullable = false)
-    private double rating;
+    private double score;
 
     @Column(nullable = false)
     private double spicyness;
@@ -31,7 +30,7 @@ public class Rating {
 
     public Rating(RatingDTO ratingDTO, Haiku haiku){
         this.id=ratingDTO.getId();
-        this.rating=ratingDTO.getRating();
+        this.score =ratingDTO.getScore();
         this.haiku = haiku;
     }
 }

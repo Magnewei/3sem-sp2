@@ -1,5 +1,6 @@
 package dat.daos;
 
+
 import dat.dtos.HaikuDTO;
 import dat.dtos.RatingDTO;
 import dat.entities.Haiku;
@@ -66,10 +67,12 @@ public class RatingDAO implements IDAO<RatingDTO, Integer> {
         try (EntityManager em = emf.createEntityManager()) {
             em.getTransaction().begin();
             Rating h = em.find(Rating.class, integer);
+
             if (h == null) {
                 throw new DatabaseException(404, "Rating not found for update", null);
             }
-            h.setRating(ratingDTO.getRating());
+            h.setScore(ratingDTO.getScore());
+
             Rating mergedRating = em.merge(h);
             em.getTransaction().commit();
             return mergedRating != null ? new RatingDTO(mergedRating) : null;
