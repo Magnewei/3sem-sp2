@@ -8,7 +8,7 @@ import jakarta.persistence.EntityManagerFactory;
 
 import java.util.List;
 
-public class HaikuPartController implements IController<HaikuPartDTO, Integer> {
+public class HaikuPartController implements IController<HaikuPartDTO, Long> {
 
     private final HaikuPartDAO dao;
 
@@ -19,7 +19,7 @@ public class HaikuPartController implements IController<HaikuPartDTO, Integer> {
 
     @Override
     public void read(Context ctx) {
-        int id = ctx.pathParamAsClass("id", Integer.class).check(this::validatePrimaryKey, "Not a valid id").get();
+        long id = ctx.pathParamAsClass("id", Long.class).check(this::validatePrimaryKey, "Not a valid id").get();
         HaikuPartDTO haikuPartDTO = dao.read(id);
         ctx.json(haikuPartDTO);
     }
@@ -39,21 +39,21 @@ public class HaikuPartController implements IController<HaikuPartDTO, Integer> {
 
     @Override
     public void update(Context ctx) {
-        int id = ctx.pathParamAsClass("id", Integer.class).check(this::validatePrimaryKey, "Not a valid id").get();
+        long id = ctx.pathParamAsClass("id", Long.class).check(this::validatePrimaryKey, "Not a valid id").get();
         HaikuPartDTO haikuPartDTO = dao.update(id, validateEntity(ctx));
         ctx.json(haikuPartDTO);
     }
 
     @Override
     public void delete(Context ctx) {
-        int id = ctx.pathParamAsClass("id", Integer.class).check(this::validatePrimaryKey, "Not a valid id").get();
+        long id = ctx.pathParamAsClass("id", Long.class).check(this::validatePrimaryKey, "Not a valid id").get();
         dao.delete(id);
         ctx.status(204);
     }
 
     @Override
-    public boolean validatePrimaryKey(Integer integer) {
-        return dao.validatePrimaryKey(integer);
+    public boolean validatePrimaryKey(Long id) {
+        return dao.validatePrimaryKey(id);
     }
 
     @Override

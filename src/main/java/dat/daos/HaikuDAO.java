@@ -12,7 +12,7 @@ import lombok.NoArgsConstructor;
 import java.util.List;
 
 @NoArgsConstructor(access = lombok.AccessLevel.PRIVATE)
-public class HaikuDAO implements IDAO<HaikuDTO, Integer> {
+public class HaikuDAO implements IDAO<HaikuDTO, Long> {
     private static HaikuDAO instance;
     private static EntityManagerFactory emf;
 
@@ -25,12 +25,12 @@ public class HaikuDAO implements IDAO<HaikuDTO, Integer> {
     }
 
     @Override
-    public HaikuDTO read(Integer integer) {
+    public HaikuDTO read(Long integer) {
         try (EntityManager em = emf.createEntityManager()) {
             Haiku haiku = em.find(Haiku.class, integer);
             return new HaikuDTO(haiku);
         } catch (Exception e) {
-            throw new DatabaseException(500, "Error reading haiku from the database", e.getCause());
+            throw new DatabaseException(500, "Error reading haiku from the database");
         }
     }
 
@@ -40,7 +40,7 @@ public class HaikuDAO implements IDAO<HaikuDTO, Integer> {
             TypedQuery<HaikuDTO> query = em.createQuery("SELECT new dat.dtos.HaikuDTO(h) FROM Haiku h", HaikuDTO.class);
             return query.getResultList();
         } catch (Exception e) {
-            throw new DatabaseException(500, "Error reading haikus from the database", e.getCause());
+            throw new DatabaseException(500, "Error reading haikus from the database");
         }
     }
 
@@ -50,29 +50,21 @@ public class HaikuDAO implements IDAO<HaikuDTO, Integer> {
             em.getTransaction().begin();
             Haiku haiku = new Haiku(haikuDTO);
 
-            for (HaikuPart part : haiku.getHaikuParts()) {
-                if (part.getId() == null) {
-                    em.persist(part);
-                } else {
-                    em.merge(part);
-                }
-            }
-
-            Haiku mergedHaiku = em.merge(haiku); 
+            em.persist(haiku);
             em.getTransaction().commit();
             return new HaikuDTO(haiku);
         } catch (Exception e) {
-            throw new DatabaseException(500, "Error creating haiku", e.getCause());
+            throw new DatabaseException(500, "Error creating haiku");
         }
     }
 
     @Override
-    public HaikuDTO update(Integer integer, HaikuDTO haikuDTO) {
+    public HaikuDTO update(Long id, HaikuDTO haikuDTO) {
         try (EntityManager em = emf.createEntityManager()) {
             em.getTransaction().begin();
-            Haiku h = em.find(Haiku.class, integer);
+            Haiku h = em.find(Haiku.class, id);
             if (h == null) {
-                throw new DatabaseException(404, "Haiku not found for update", null);
+                throw new DatabaseException(404, "Haiku not found for update");
             }
             h.setHaikuParts(haikuDTO.getHaikuParts().stream().map(HaikuPart::new).toList());
             h.setAuthor(haikuDTO.getAuthor());
@@ -81,32 +73,32 @@ public class HaikuDAO implements IDAO<HaikuDTO, Integer> {
             em.getTransaction().commit();
             return new HaikuDTO(mergedHaiku);
         } catch (Exception e) {
-            throw new DatabaseException(500, "Error updating haiku", e.getCause());
+            throw new DatabaseException(500, "Error updating haiku");
         }
     }
 
     @Override
-    public void delete(Integer integer) {
+    public void delete(Long id) {
         try (EntityManager em = emf.createEntityManager()) {
             em.getTransaction().begin();
-            Haiku haiku = em.find(Haiku.class, integer);
+            Haiku haiku = em.find(Haiku.class, id);
             if (haiku == null) {
-                throw new DatabaseException(404, "Haiku not found for deletion", null);
+                throw new DatabaseException(404, "Haiku not found for deletion");
             }
             em.remove(haiku);
             em.getTransaction().commit();
         } catch (Exception e) {
-            throw new DatabaseException(500, "Error deleting haiku", e.getCause());
+            throw new DatabaseException(500, "Error deleting haiku");
         }
     }
 
     @Override
-    public boolean validatePrimaryKey(Integer integer) {
+    public boolean validatePrimaryKey(Long id) {
         try (EntityManager em = emf.createEntityManager()) {
-            Haiku haiku = em.find(Haiku.class, integer);
+            Haiku haiku = em.find(Haiku.class, id);
             return haiku != null;
         } catch (Exception e) {
-            throw new DatabaseException(500, "Error validating primary key", e.getCause());
+            throw new DatabaseException(500, "Error validating primary key");
         }
     }
 }

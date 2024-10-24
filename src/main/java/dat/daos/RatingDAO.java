@@ -12,7 +12,7 @@ import jakarta.persistence.TypedQuery;
 
 import java.util.List;
 
-public class RatingDAO implements IDAO<RatingDTO, Integer> {
+public class RatingDAO implements IDAO<RatingDTO, Long> {
 
     private static RatingDAO instance;
     private static EntityManagerFactory emf;
@@ -26,12 +26,12 @@ public class RatingDAO implements IDAO<RatingDTO, Integer> {
     }
 
     @Override
-    public RatingDTO read(Integer integer) {
+    public RatingDTO read(Long id) {
         try (EntityManager em = emf.createEntityManager()) {
-            Rating rating = em.find(Rating.class, integer);
+            Rating rating = em.find(Rating.class, id);
             return new RatingDTO(rating);
         } catch (Exception e) {
-            throw new DatabaseException(500, "Error reading Rating from the database", e.getCause());
+            throw new DatabaseException(500, "Error reading Rating from the database");
         }
     }
 
@@ -41,7 +41,7 @@ public class RatingDAO implements IDAO<RatingDTO, Integer> {
             TypedQuery<RatingDTO> query = em.createQuery("SELECT new dat.dtos.RatingDTO(h) FROM Rating h", RatingDTO.class);
             return query.getResultList();
         } catch (Exception e) {
-            throw new DatabaseException(500, "Error reading Ratings from the database", e.getCause());
+            throw new DatabaseException(500, "Error reading Ratings from the database");
         }
     }
 
@@ -51,25 +51,25 @@ public class RatingDAO implements IDAO<RatingDTO, Integer> {
             em.getTransaction().begin();
             Haiku haiku = em.find(Haiku.class, ratingDTO.getHaikuId());
             if (haiku == null) {
-                throw new DatabaseException(404, "Haiku not found with id: " + ratingDTO.getHaikuId(), null);
+                throw new DatabaseException(404, "Haiku not found with id: " + ratingDTO.getHaikuId());
             }
             Rating rating = new Rating(ratingDTO, haiku);
             em.persist(rating);
             em.getTransaction().commit();
             return new RatingDTO(rating);
         } catch (Exception e) {
-            throw new DatabaseException(500, "Could not create rating", e.getCause());
+            throw new DatabaseException(500, "Could not create rating");
         }
     }
 
     @Override
-    public RatingDTO update(Integer integer, RatingDTO ratingDTO) {
+    public RatingDTO update(Long id, RatingDTO ratingDTO) {
         try (EntityManager em = emf.createEntityManager()) {
             em.getTransaction().begin();
-            Rating h = em.find(Rating.class, integer);
+            Rating h = em.find(Rating.class, id);
 
             if (h == null) {
-                throw new DatabaseException(404, "Rating not found for update", null);
+                throw new DatabaseException(404, "Rating not found for update");
             }
             h.setScore(ratingDTO.getScore());
 
@@ -77,32 +77,32 @@ public class RatingDAO implements IDAO<RatingDTO, Integer> {
             em.getTransaction().commit();
             return mergedRating != null ? new RatingDTO(mergedRating) : null;
         } catch (Exception e) {
-            throw new DatabaseException(500, "Error updating rating", e.getCause());
+            throw new DatabaseException(500, "Error updating rating");
         }
     }
 
     @Override
-    public void delete(Integer integer) {
+    public void delete(Long id) {
         try (EntityManager em = emf.createEntityManager()) {
             em.getTransaction().begin();
-            Rating rating = em.find(Rating.class, integer);
+            Rating rating = em.find(Rating.class, id);
             if (rating == null) {
-                throw new DatabaseException(404, "Rating not found for deletion", null);
+                throw new DatabaseException(404, "Rating not found for deletion");
             }
             em.remove(rating);
             em.getTransaction().commit();
         } catch (Exception e) {
-            throw new DatabaseException(500, "Error deleting rating", e.getCause());
+            throw new DatabaseException(500, "Error deleting rating");
         }
     }
 
     @Override
-    public boolean validatePrimaryKey(Integer integer) {
+    public boolean validatePrimaryKey(Long id) {
         try (EntityManager em = emf.createEntityManager()) {
-            Rating rating = em.find(Rating.class, integer);
+            Rating rating = em.find(Rating.class, id);
             return rating != null;
         } catch (Exception e) {
-            throw new DatabaseException(500, "Error validating primary key", e.getCause());
+            throw new DatabaseException(500, "Error validating primary key");
         }
     }
 }

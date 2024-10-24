@@ -11,7 +11,7 @@ import org.jetbrains.annotations.NotNull;
 import java.util.Comparator;
 import java.util.List;
 
-public class RatingController implements IController<RatingDTO, Integer> {
+public class RatingController implements IController<RatingDTO, Long> {
 
     private final RatingDAO dao;
 
@@ -22,7 +22,7 @@ public class RatingController implements IController<RatingDTO, Integer> {
 
     @Override
     public void read(Context ctx) {
-        int id = ctx.pathParamAsClass("id", Integer.class).check(this::validatePrimaryKey, "Not a valid id").get();
+        Long id = ctx.pathParamAsClass("id", Long.class).check(this::validatePrimaryKey, "Not a valid id").get();
         RatingDTO ratingDTO = dao.read(id);
         ctx.json(ratingDTO);
     }
@@ -42,21 +42,21 @@ public class RatingController implements IController<RatingDTO, Integer> {
 
     @Override
     public void update(Context ctx) {
-        int id = ctx.pathParamAsClass("id", Integer.class).check(this::validatePrimaryKey, "Not a valid id").get();
+        long id = ctx.pathParamAsClass("id", Long.class).check(this::validatePrimaryKey, "Not a valid id").get();
         RatingDTO ratingDTO = dao.update(id, validateEntity(ctx));
         ctx.json(ratingDTO);
     }
 
     @Override
     public void delete(Context ctx) {
-        int id = ctx.pathParamAsClass("id", Integer.class).check(this::validatePrimaryKey, "Not a valid id").get();
+        long id = ctx.pathParamAsClass("id", Long.class).check(this::validatePrimaryKey, "Not a valid id").get();
         dao.delete(id);
         ctx.status(204);
     }
 
     @Override
-    public boolean validatePrimaryKey(Integer integer) {
-        return dao.validatePrimaryKey(integer);
+    public boolean validatePrimaryKey(Long id) {
+        return dao.validatePrimaryKey(id);
     }
 
     @Override
@@ -66,25 +66,25 @@ public class RatingController implements IController<RatingDTO, Integer> {
                 .get();
     }
 
-    public void sortByPopularity(@NotNull Context context) {
+    public void sortByPopularity(Context context) {
         List<RatingDTO> ratings = dao.readAll();
         ratings.sort(Comparator.comparingDouble(RatingDTO::getScore).reversed());
         context.json(ratings);
     }
 
-    public void sortByOriginality(@NotNull Context context) {
+    public void sortByOriginality(Context context) {
         List<RatingDTO> ratings = dao.readAll();
         ratings.sort(Comparator.comparingDouble(RatingDTO::getOriginality).reversed());
         context.json(ratings);
     }
 
-    public void sortBySpicyness(@NotNull Context context) {
+    public void sortBySpicyness(Context context) {
         List<RatingDTO> ratings = dao.readAll();
         ratings.sort(Comparator.comparingDouble(RatingDTO::getSpicyness).reversed());
         context.json(ratings);
     }
 
-    public void getLowestRated(@NotNull Context context) {
+    public void getLowestRated(Context context) {
         List<RatingDTO> ratings = dao.readAll();
         ratings.sort(Comparator.comparingDouble(RatingDTO::getScore));
         context.json(ratings);

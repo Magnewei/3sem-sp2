@@ -11,7 +11,7 @@ import lombok.NoArgsConstructor;
 import java.util.List;
 
 @NoArgsConstructor(access = lombok.AccessLevel.PRIVATE)
-public class CollectionDAO implements IDAO<CollectionDTO, Integer> {
+public class CollectionDAO implements IDAO<CollectionDTO, Long> {
 
     private static CollectionDAO instance;
     private static EntityManagerFactory emf;
@@ -25,12 +25,12 @@ public class CollectionDAO implements IDAO<CollectionDTO, Integer> {
     }
 
     @Override
-    public CollectionDTO read(Integer integer) {
+    public CollectionDTO read(Long id) {
         try (EntityManager em = emf.createEntityManager()) {
-            Collection collection = em.find(Collection.class, integer);
+            Collection collection = em.find(Collection.class, id);
             return new CollectionDTO(collection);
         } catch (Exception e) {
-            throw new DatabaseException(500, "Error reading collection from the database", e.getCause());
+            throw new DatabaseException(500, "Error reading collection from the database");
         }
     }
 
@@ -40,7 +40,7 @@ public class CollectionDAO implements IDAO<CollectionDTO, Integer> {
             TypedQuery<CollectionDTO> query = em.createQuery("SELECT new dat.dtos.CollectionDTO(c) FROM Collection c", CollectionDTO.class);
             return query.getResultList();
         } catch (Exception e) {
-            throw new DatabaseException(500, "Error reading collections from the database", e.getCause());
+            throw new DatabaseException(500, "Error reading collections from the database");
         }
     }
 
@@ -53,17 +53,17 @@ public class CollectionDAO implements IDAO<CollectionDTO, Integer> {
             em.getTransaction().commit();
             return new CollectionDTO(collection);
         } catch (Exception e) {
-            throw new DatabaseException(500, "Error creating collection", e.getCause());
+            throw new DatabaseException(500, "Error creating collection");
         }
     }
 
     @Override
-    public CollectionDTO update(Integer integer, CollectionDTO collectionDTO) {
+    public CollectionDTO update(Long id, CollectionDTO collectionDTO) {
         try (EntityManager em = emf.createEntityManager()) {
             em.getTransaction().begin();
-            Collection c = em.find(Collection.class, integer);
+            Collection c = em.find(Collection.class, id);
             if (c == null) {
-                throw new DatabaseException(404, "Collection not found for update", null);
+                throw new DatabaseException(404, "Collection not found for update");
             }
             c.setName(collectionDTO.getName());
             c.setHaikus(collectionDTO.getHaikus());
@@ -71,32 +71,32 @@ public class CollectionDAO implements IDAO<CollectionDTO, Integer> {
             em.getTransaction().commit();
             return new CollectionDTO(mergedCollection);
         } catch (Exception e) {
-            throw new DatabaseException(500, "Error updating collection", e.getCause());
+            throw new DatabaseException(500, "Error updating collection");
         }
     }
 
     @Override
-    public void delete(Integer integer) {
+    public void delete(Long id) {
         try (EntityManager em = emf.createEntityManager()) {
             em.getTransaction().begin();
-            Collection collection = em.find(Collection.class, integer);
+            Collection collection = em.find(Collection.class, id);
             if (collection == null) {
-                throw new DatabaseException(404, "Collection not found for deletion", null);
+                throw new DatabaseException(404, "Collection not found for deletion");
             }
             em.remove(collection);
             em.getTransaction().commit();
         } catch (Exception e) {
-            throw new DatabaseException(500, "Error deleting collection", e.getCause());
+            throw new DatabaseException(500, "Error deleting collection");
         }
     }
 
     @Override
-    public boolean validatePrimaryKey(Integer integer) {
+    public boolean validatePrimaryKey(Long id) {
         try (EntityManager em = emf.createEntityManager()) {
-            Collection collection = em.find(Collection.class, integer);
+            Collection collection = em.find(Collection.class, id);
             return collection != null;
         } catch (Exception e) {
-            throw new DatabaseException(500, "Error validating primary key", e.getCause());
+            throw new DatabaseException(500, "Error validating primary key");
         }
     }
 }

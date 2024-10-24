@@ -13,7 +13,7 @@ import lombok.NoArgsConstructor;
 import java.util.List;
 
 @NoArgsConstructor(access = lombok.AccessLevel.PRIVATE)
-public class HaikuPartDAO implements IDAO<HaikuPartDTO, Integer> {
+public class HaikuPartDAO implements IDAO<HaikuPartDTO, Long> {
 
     private static HaikuPartDAO instance;
     private static EntityManagerFactory emf;
@@ -26,7 +26,7 @@ public class HaikuPartDAO implements IDAO<HaikuPartDTO, Integer> {
         return instance;
     }
 
-    public HaikuDTO addHaikuPartToHaiku(Integer id, HaikuPartDTO haikuPartDTO ) {
+    public HaikuDTO addHaikuPartToHaiku(Long id, HaikuPartDTO haikuPartDTO ) {
         try (EntityManager em = emf.createEntityManager()) {
             em.getTransaction().begin();
             HaikuPart haikuPart = new HaikuPart(haikuPartDTO);
@@ -37,17 +37,17 @@ public class HaikuPartDAO implements IDAO<HaikuPartDTO, Integer> {
             em.getTransaction().commit();
             return new HaikuDTO(mergedHaiku);
         } catch (Exception e) {
-            throw new DatabaseException(500, "Error adding HaikuPart to Haiku", e.getCause());
+            throw new DatabaseException(500, "Error adding HaikuPart to Haiku");
         }
     }
 
     @Override
-    public HaikuPartDTO read(Integer integer) {
+    public HaikuPartDTO read(Long id) {
         try (EntityManager em = emf.createEntityManager()) {
-            HaikuPart haikuPart = em.find(HaikuPart.class, integer);
+            HaikuPart haikuPart = em.find(HaikuPart.class, id);
             return haikuPart != null ? new HaikuPartDTO(haikuPart) : null;
         } catch (Exception e) {
-            throw new DatabaseException(500, "Error reading HaikuPart from the database", e.getCause());
+            throw new DatabaseException(500, "Error reading HaikuPart from the database");
         }
     }
 
@@ -57,7 +57,7 @@ public class HaikuPartDAO implements IDAO<HaikuPartDTO, Integer> {
             TypedQuery<HaikuPartDTO> query = em.createQuery("SELECT new dat.dtos.HaikuPartDTO(h) FROM HaikuPart h", HaikuPartDTO.class);
             return query.getResultList();
         } catch (Exception e) {
-            throw new DatabaseException(500, "Error reading HaikuParts from the database", e.getCause());
+            throw new DatabaseException(500, "Error reading HaikuParts from the database");
         }
     }
 
@@ -70,17 +70,17 @@ public class HaikuPartDAO implements IDAO<HaikuPartDTO, Integer> {
             em.getTransaction().commit();
             return new HaikuPartDTO(haikuPart);
         } catch (Exception e) {
-            throw new DatabaseException(500, "Error creating HaikuPart", e.getCause());
+            throw new DatabaseException(500, "Error creating HaikuPart");
         }
     }
 
     @Override
-    public HaikuPartDTO update(Integer integer, HaikuPartDTO haikuPartDTO) {
+    public HaikuPartDTO update(Long id, HaikuPartDTO haikuPartDTO) {
         try (EntityManager em = emf.createEntityManager()) {
             em.getTransaction().begin();
-            HaikuPart h = em.find(HaikuPart.class, integer);
+            HaikuPart h = em.find(HaikuPart.class, id);
             if (h == null) {
-                throw new DatabaseException(404, "HaikuPart not found for update", null);
+                throw new DatabaseException(404, "HaikuPart not found for update");
             }
             h.setContent(haikuPartDTO.getContent());
             h.setFiveSyllables(haikuPartDTO.isFiveSyllables());
@@ -89,33 +89,33 @@ public class HaikuPartDAO implements IDAO<HaikuPartDTO, Integer> {
             em.getTransaction().commit();
             return new HaikuPartDTO(mergedHaikuPart);
         } catch (Exception e) {
-            throw new DatabaseException(500, "Error updating HaikuPart", e.getCause());
+            throw new DatabaseException(500, "Error updating HaikuPart");
         }
     }
 
     @Override
-    public void delete(Integer integer) {
+    public void delete(Long id) {
         try (EntityManager em = emf.createEntityManager()) {
             em.getTransaction().begin();
-            HaikuPart haikuPart = em.find(HaikuPart.class, integer);
+            HaikuPart haikuPart = em.find(HaikuPart.class, id);
             if (haikuPart != null) {
                 em.remove(haikuPart);
             } else {
-                throw new DatabaseException(404, "HaikuPart not found for deletion", null);
+                throw new DatabaseException(404, "HaikuPart not found for deletion");
             }
             em.getTransaction().commit();
         } catch (Exception e) {
-            throw new DatabaseException(500, "Error deleting HaikuPart", e.getCause());
+            throw new DatabaseException(500, "Error deleting HaikuPart");
         }
     }
 
     @Override
-    public boolean validatePrimaryKey(Integer integer) {
+    public boolean validatePrimaryKey(Long id) {
         try (EntityManager em = emf.createEntityManager()) {
-            HaikuPart haikuPart = em.find(HaikuPart.class, integer);
+            HaikuPart haikuPart = em.find(HaikuPart.class, id);
             return haikuPart != null;
         } catch (Exception e) {
-            throw new DatabaseException(500, "Error validating primary key", e.getCause());
+            throw new DatabaseException(500, "Error validating primary key");
         }
     }
 }

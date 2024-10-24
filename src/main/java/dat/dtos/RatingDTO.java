@@ -25,13 +25,13 @@ public class RatingDTO {
         this.originality = rating.getOriginality();
     }
 
-    public RatingDTO(Long id, double rating, Long haikuId) {
+    public RatingDTO(long id, double rating, long haikuId) {
         this.id = id;
         this.score = rating;
         this.haikuId = haikuId;
     }
 
-    public RatingDTO(Long id, Long haikuId, double rating, double spicyness, double originality) {
+    public RatingDTO(long id, long haikuId, double rating, double spicyness, double originality) {
         this.id = id;
         this.haikuId = haikuId;
         this.score = rating;

@@ -27,9 +27,9 @@ public class ExceptionController {
      * and before the method call reaches the controller to avoid wrong error codes being sent to the client.
      */
     public void databaseExceptionHandler(DatabaseException e, Context ctx) {
-        logger.error(ctx.attribute("requestInfo") + " " + ctx.res().getStatus() + " " + e.getMessage(), e.getCause());
+        logger.error(ctx.attribute("requestInfo") + " " + ctx.res().getStatus() + " " + e.getMessage());
         ctx.status(e.getStatusCode());
-        ctx.json(new ErrorMessage(e.getStatusCode(), (e.getMessage() + "Error: " + e.getErrorMessage())));
+        ctx.json(new ErrorMessage(e.getStatusCode(), e.getMessage()));
     }
 
 
