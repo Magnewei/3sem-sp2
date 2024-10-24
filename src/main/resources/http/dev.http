@@ -63,20 +63,23 @@ Content-Type: application/json
 Authorization: Bearer {{jwt_token}}
 
 {
-  "author": "Matsuo Basho",
-  "dateCreated": "2023-10-01",
-  "user": {
+  "dateCreated": "2023-10-02",
 
-  },
+  "author": "Le bron flames",
+
+
   "haikuParts": [
     {
-      "id": 1
+      "id": 1,
+        "content": "An old silent pond..."
     },
     {
-      "id": 2
+      "id": 2,
+        "content": "A frog jumps into the pond..."
     },
     {
-      "id": 3
+      "id": 3,
+      "content": "An old silent pond..."
     }
   ]
 }
@@ -87,17 +90,23 @@ Content-Type: application/json
 Authorization: Bearer {{jwt_token}}
 
 {
-  "author": "Updated Author",
   "dateCreated": "2023-10-02",
-  "user": {
-    "id": 1
-  },
+  "user": "user",
+  "author": "Le bron flames the second",
+
+
   "haikuParts": [
     {
-      "id": 1
+      "id": 1,
+      "content": "An old silent pond 2..."
     },
     {
-      "id": 2
+      "id": 2,
+      "content": "A frog jumps into the pond 3..."
+    },
+    {
+      "id": 3,
+      "content": "An old silent pond 4..."
     }
   ]
 }
