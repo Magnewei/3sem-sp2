@@ -78,6 +78,11 @@ public class HaikuController implements IController<HaikuDTO, Integer> {
         return dao.validatePrimaryKey(integer);
     }
 
+
+    /**
+     * Validates the HaikuDTO entity from the request body.
+     * If any validation fails, a 400 Bad Request response is returned with an error message.
+     */
     @Override
     public HaikuDTO validateEntity(Context ctx) {
         return ctx.bodyValidator(HaikuDTO.class)

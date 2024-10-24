@@ -54,9 +54,6 @@ public class HaikuDAO implements IDAO<HaikuDTO, Integer> {
             em.persist(haiku);
             em.getTransaction().commit();
             return new HaikuDTO(haiku);
-        } catch (Exception e) {
-            e.printStackTrace();
-            throw new RuntimeException("Could not create haiku");
         }
     }
 

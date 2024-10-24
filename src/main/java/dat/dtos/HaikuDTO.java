@@ -2,6 +2,7 @@ package dat.dtos;
 
 import dat.entities.Haiku;;
 import dat.security.entities.User;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -12,6 +13,7 @@ import java.util.stream.Collectors;
 
 @Data
 @NoArgsConstructor
+@Builder
 public class HaikuDTO {
     private Long id;
     private List<HaikuPartDTO> haikuParts = new ArrayList<>();
