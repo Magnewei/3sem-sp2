@@ -1,9 +1,8 @@
 package dat.controllers;
 
 import dat.config.HibernateConfig;
-import dat.daos.HaikuDAO;
-import dat.dtos.HaikuDTO;
-import dat.entities.Haiku;
+import dat.daos.CollectionDAO;
+import dat.dtos.CollectionDTO;
 import io.javalin.http.Context;
 import jakarta.persistence.EntityManagerFactory;
 
@@ -14,43 +13,44 @@ import java.util.List;
  *
  * @Author: Anton Friis Stengaard
  */
-public class HaikuController implements IController<HaikuDTO, Integer> {
+public class CollectionController implements IController<CollectionDTO, Integer> {
 
-    private final HaikuDAO dao;
+    private final CollectionDAO dao;
 
-    public HaikuController() {
+    public CollectionController() {
         EntityManagerFactory emf = HibernateConfig.getEntityManagerFactory();
-        this.dao = HaikuDAO.getInstance(emf);
+        this.dao = CollectionDAO.getInstance(emf);
     }
+
     @Override
     public void read(Context ctx) {
         // request
         int id = ctx.pathParamAsClass("id", Integer.class).check(this::validatePrimaryKey, "Not a valid id").get();
         // DTO
-        HaikuDTO haikuDTO = dao.read(id);
+        CollectionDTO collectionDTO = dao.read(id);
         // response
         ctx.res().setStatus(200);
-        ctx.json(haikuDTO, HaikuDTO.class);
+        ctx.json(collectionDTO, CollectionDTO.class);
     }
 
     @Override
     public void readAll(Context ctx) {
         // List of DTOS
-        List<HaikuDTO> haikuDTOS = dao.readAll();
+        List<CollectionDTO> collectionDTOS = dao.readAll();
         // response
         ctx.res().setStatus(200);
-        ctx.json(haikuDTOS, HaikuDTO.class);
+        ctx.json(collectionDTOS, CollectionDTO.class);
     }
 
     @Override
     public void create(Context ctx) {
         // request
-        HaikuDTO jsonRequest = ctx.bodyAsClass(HaikuDTO.class);
+        CollectionDTO jsonRequest = ctx.bodyAsClass(CollectionDTO.class);
         // DTO
-        HaikuDTO haikuDTO = dao.create(jsonRequest);
+        CollectionDTO collectionDTO = dao.create(jsonRequest);
         // response
         ctx.res().setStatus(201);
-        ctx.json(haikuDTO, HaikuDTO.class);
+        ctx.json(collectionDTO, CollectionDTO.class);
     }
 
     @Override
@@ -58,10 +58,10 @@ public class HaikuController implements IController<HaikuDTO, Integer> {
         // request
         int id = ctx.pathParamAsClass("id", Integer.class).check(this::validatePrimaryKey, "Not a valid id").get();
         // dto
-        HaikuDTO haikuDTO = dao.update(id, validateEntity(ctx));
+        CollectionDTO collectionDTO = dao.update(id, validateEntity(ctx));
         // response
         ctx.res().setStatus(200);
-        ctx.json(haikuDTO, Haiku.class);
+        ctx.json(collectionDTO, CollectionDTO.class);
     }
 
     @Override
@@ -78,17 +78,15 @@ public class HaikuController implements IController<HaikuDTO, Integer> {
         return dao.validatePrimaryKey(integer);
     }
 
-
     /**
-     * Validates the HaikuDTO entity from the request body.
+     * Validates the CollectionDTO entity from the request body.
      * If any validation fails, a 400 Bad Request response is returned with an error message.
      */
     @Override
-    public HaikuDTO validateEntity(Context ctx) {
-        return ctx.bodyValidator(HaikuDTO.class)
-                .check( h -> h.getAuthor() != null && !h.getAuthor().isEmpty(), "Haiku author must be set")
-                .check( h -> h.getHaikuParts() != null && !h.getHaikuParts().isEmpty(), "Haiku parts must be set")
-                .check( h -> h.getDateCreated() != null, "Haiku creation date must be set")
+    public CollectionDTO validateEntity(Context ctx) {
+        return ctx.bodyValidator(CollectionDTO.class)
+                .check(c -> c.getName() != null && !c.getName().isEmpty(), "Collection name must be set")
+                .check(c -> c.getHaikus() != null && !c.getHaikus().isEmpty(), "Collection haikus must be set")
                 .get();
     }
 }

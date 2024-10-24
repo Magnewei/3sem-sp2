@@ -5,6 +5,7 @@ import java.util.stream.Collectors;
 
 import dat.entities.Haiku;
 import dat.entities.HaikuPart;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.NoArgsConstructor;
@@ -12,6 +13,7 @@ import lombok.NoArgsConstructor;
 @Getter
 @Setter
 @NoArgsConstructor
+@Builder
 public class HaikuPartDTO {
     private Long id;
     private String content;
@@ -24,15 +26,22 @@ public class HaikuPartDTO {
         this.isFiveSyllables = haikuParts.isFiveSyllables();
     }
 
-    public HaikuPartDTO(Long id, String content, boolean isFiveSyllables){
-        this.id = id;
-        this.content = content;
-        this.isFiveSyllables = isFiveSyllables;
+    public HaikuPartDTO(long id, String content, boolean isFiveSyllables){
+        this.id=id;
+        this.content=content;
+        this.isFiveSyllables=isFiveSyllables;
     }
 
     public HaikuPartDTO(String content, boolean isFiveSyllables){
         this.content = content;
         this.isFiveSyllables = isFiveSyllables;
+    }
+
+    public HaikuPartDTO(long id, String content, boolean isFiveSyllables, List<Haiku> haikus){
+        this.id = id;
+        this.content = content;
+        this.isFiveSyllables = isFiveSyllables;
+        this.haikus = haikus;
     }
 
     public static List<HaikuPartDTO> toHaikuPartDTOList(List<HaikuPart> haikus) {

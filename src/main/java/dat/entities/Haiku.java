@@ -25,7 +25,6 @@ public class Haiku {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-
     @Column(nullable = false)
     private String author;
 
@@ -43,6 +42,13 @@ public class Haiku {
             inverseJoinColumns = @JoinColumn(name = "haiku_parts_id") // Column for the other entity (HaikuParts)
     )
     private List<HaikuPart> haikuParts = new ArrayList<>();
+
+    @ManyToMany(cascade = CascadeType.PERSIST)
+    @JoinColumn(name = "collection_id")
+    private List<Collection> collections = new ArrayList<>();
+
+    @OneToOne(mappedBy = "haiku")
+    private Rating rating;
 
     public Haiku(HaikuDTO haikuDTO){
         this.id=haikuDTO.getId();

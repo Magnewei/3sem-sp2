@@ -1,56 +1,55 @@
 package dat.controllers;
 
 import dat.config.HibernateConfig;
-import dat.daos.HaikuDAO;
-import dat.dtos.HaikuDTO;
-import dat.entities.Haiku;
+import dat.daos.HaikuPartDAO;
+import dat.daos.RatingDAO;
+import dat.dtos.HaikuPartDTO;
+import dat.dtos.RatingDTO;
+import dat.entities.HaikuPart;
+import dat.entities.Rating;
 import io.javalin.http.Context;
 import jakarta.persistence.EntityManagerFactory;
 
 import java.util.List;
 
-/**
- * Purpose:
- *
- * @Author: Anton Friis Stengaard
- */
-public class HaikuController implements IController<HaikuDTO, Integer> {
+public class RatingController implements IController<RatingDTO, Integer> {
 
-    private final HaikuDAO dao;
+    private final RatingDAO dao;
 
-    public HaikuController() {
+    public RatingController() {
         EntityManagerFactory emf = HibernateConfig.getEntityManagerFactory();
-        this.dao = HaikuDAO.getInstance(emf);
+        this.dao = RatingDAO.getInstance(emf);
     }
+
     @Override
     public void read(Context ctx) {
         // request
         int id = ctx.pathParamAsClass("id", Integer.class).check(this::validatePrimaryKey, "Not a valid id").get();
         // DTO
-        HaikuDTO haikuDTO = dao.read(id);
+        RatingDTO ratingPartDTO = dao.read(id);
         // response
         ctx.res().setStatus(200);
-        ctx.json(haikuDTO, HaikuDTO.class);
+        ctx.json(ratingPartDTO, HaikuPartDTO.class);
     }
 
     @Override
     public void readAll(Context ctx) {
         // List of DTOS
-        List<HaikuDTO> haikuDTOS = dao.readAll();
+        List<RatingDTO> ratingpartDTO = dao.readAll();
         // response
         ctx.res().setStatus(200);
-        ctx.json(haikuDTOS, HaikuDTO.class);
+        ctx.json(ratingpartDTO, HaikuPartDTO.class);
     }
 
     @Override
     public void create(Context ctx) {
         // request
-        HaikuDTO jsonRequest = ctx.bodyAsClass(HaikuDTO.class);
+        RatingDTO jsonRequest = ctx.bodyAsClass(RatingDTO.class);
         // DTO
-        HaikuDTO haikuDTO = dao.create(jsonRequest);
+        RatingDTO ratingPartDTO = dao.create(jsonRequest);
         // response
         ctx.res().setStatus(201);
-        ctx.json(haikuDTO, HaikuDTO.class);
+        ctx.json(ratingPartDTO, HaikuPartDTO.class);
     }
 
     @Override
@@ -58,10 +57,10 @@ public class HaikuController implements IController<HaikuDTO, Integer> {
         // request
         int id = ctx.pathParamAsClass("id", Integer.class).check(this::validatePrimaryKey, "Not a valid id").get();
         // dto
-        HaikuDTO haikuDTO = dao.update(id, validateEntity(ctx));
+        RatingDTO ratingPartDTO = dao.update(id, validateEntity(ctx));
         // response
         ctx.res().setStatus(200);
-        ctx.json(haikuDTO, Haiku.class);
+        ctx.json(ratingPartDTO, Rating.class);
     }
 
     @Override
@@ -78,17 +77,11 @@ public class HaikuController implements IController<HaikuDTO, Integer> {
         return dao.validatePrimaryKey(integer);
     }
 
-
-    /**
-     * Validates the HaikuDTO entity from the request body.
-     * If any validation fails, a 400 Bad Request response is returned with an error message.
-     */
     @Override
-    public HaikuDTO validateEntity(Context ctx) {
-        return ctx.bodyValidator(HaikuDTO.class)
-                .check( h -> h.getAuthor() != null && !h.getAuthor().isEmpty(), "Haiku author must be set")
-                .check( h -> h.getHaikuParts() != null && !h.getHaikuParts().isEmpty(), "Haiku parts must be set")
-                .check( h -> h.getDateCreated() != null, "Haiku creation date must be set")
+    public RatingDTO validateEntity(Context ctx) {
+        return ctx.bodyValidator(RatingDTO.class)
+                .check(h -> h.getRating() >= 0 && h.getRating() <= 10, "Rating must be between 0 and 10")
                 .get();
     }
+
 }

@@ -3,6 +3,7 @@ package dat.config;
 import dat.daos.HaikuDAO;
 import dat.dtos.HaikuDTO;
 import dat.dtos.HaikuPartDTO;
+import dat.dtos.RatingDTO;
 import dat.entities.Haiku;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
@@ -38,8 +39,9 @@ public class Populate {
         haikuParts.add(new HaikuPartDTO("Breath mingles, we burn", true));
         haikuParts.add(new HaikuPartDTO("Bodies move in sultry waves", false));
         haikuParts.add(new HaikuPartDTO("Night surrenders slow", true));
-
+      
         HaikuDTO haiku = new HaikuDTO(0L, haikuParts, "Gods lesson", LocalDate.now(), null);
         return new Haiku(haiku);
+
     }
 }
