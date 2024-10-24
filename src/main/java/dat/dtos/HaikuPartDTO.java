@@ -8,9 +8,11 @@ import dat.entities.HaikuPart;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.NoArgsConstructor;
 
 @Getter
 @Setter
+@NoArgsConstructor
 @Builder
 public class HaikuPartDTO {
     private Long id;
@@ -19,9 +21,9 @@ public class HaikuPartDTO {
     private List<Haiku> haikus;
 
     public HaikuPartDTO(HaikuPart haikuParts){
-        this.id=haikuParts.getId();
-        this.content=haikuParts.getContent();
-        this.isFiveSyllables=haikuParts.isFiveSyllables();
+        this.id = haikuParts.getId();
+        this.content = haikuParts.getContent();
+        this.isFiveSyllables = haikuParts.isFiveSyllables();
     }
 
     public HaikuPartDTO(long id, String content, boolean isFiveSyllables){
@@ -31,8 +33,8 @@ public class HaikuPartDTO {
     }
 
     public HaikuPartDTO(String content, boolean isFiveSyllables){
-        this.content=content;
-        this.isFiveSyllables=isFiveSyllables;
+        this.content = content;
+        this.isFiveSyllables = isFiveSyllables;
     }
 
     public HaikuPartDTO(long id, String content, boolean isFiveSyllables, List<Haiku> haikus){

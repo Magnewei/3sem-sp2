@@ -1,7 +1,6 @@
 package dat.daos;
 
 import dat.dtos.HaikuDTO;
-import dat.dtos.HaikuPartDTO;
 import dat.entities.Haiku;
 import dat.entities.HaikuPart;
 import jakarta.persistence.EntityManager;
@@ -9,18 +8,13 @@ import jakarta.persistence.EntityManagerFactory;
 import jakarta.persistence.TypedQuery;
 import lombok.NoArgsConstructor;
 
-import java.math.BigDecimal;
 import java.util.List;
-import java.util.Set;
 
 @NoArgsConstructor(access = lombok.AccessLevel.PRIVATE)
 public class HaikuDAO implements IDAO<HaikuDTO, Integer> {
 
     private static HaikuDAO instance;
     private static EntityManagerFactory emf;
-
-    Set<HaikuPartDTO> calParts = getCalParts();
-    Set<HaikuPartDTO> hilParts = getHilParts();
 
     public static HaikuDAO getInstance(EntityManagerFactory _emf) {
         if (instance == null) {
@@ -51,9 +45,22 @@ public class HaikuDAO implements IDAO<HaikuDTO, Integer> {
         try (EntityManager em = emf.createEntityManager()) {
             em.getTransaction().begin();
             Haiku haiku = new Haiku(haikuDTO);
-            em.persist(haiku);
+
+            // Save HaikuPart entities first
+            for (HaikuPart part : haiku.getHaikuParts()) {
+                if (part.getId() == null) {
+                    em.persist(part);
+                } else {
+                    em.merge(part);
+                }
+            }
+
+            Haiku mergedHaiku = em.merge(haiku); // Use merge instead of persist
             em.getTransaction().commit();
-            return new HaikuDTO(haiku);
+            return new HaikuDTO(mergedHaiku);
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new RuntimeException("Could not create haiku");
         }
     }
 
@@ -89,23 +96,5 @@ public class HaikuDAO implements IDAO<HaikuDTO, Integer> {
             Haiku haiku = em.find(Haiku.class, integer);
             return haiku != null;
         }
-    }
-
-    private static Set<HaikuPartDTO> getCalParts() {
-        HaikuPartDTO cal1 = new HaikuPartDTO(1L, "Kevin at the beach", true);
-        HaikuPartDTO cal2 = new HaikuPartDTO(2L, "Getting whole body burned", false);
-        HaikuPartDTO cal3 = new HaikuPartDTO(3L, "Beach killed Kevin", true);
-
-        HaikuPartDTO[] haikuPartArray = {cal1,cal2,cal3};
-        return Set.of(haikuPartArray);
-    }
-
-    private static Set<HaikuPartDTO> getHilParts() {
-        HaikuPartDTO hil1 = new HaikuPartDTO(4L, "Kevin gets a soul", true);
-        HaikuPartDTO hil2 = new HaikuPartDTO(5L, "A mortal life sacrificed", false);
-        HaikuPartDTO hil3 = new HaikuPartDTO(6L, "Ginger life easy", true);
-
-        HaikuPartDTO[] haikuPartArray = {hil1,hil2,hil3};
-        return Set.of(haikuPartArray);
     }
 }
