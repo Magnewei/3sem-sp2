@@ -2,22 +2,24 @@
 GET {{url}}/auth/test/
 
 ### Populate the database with some data
-GET {{url}}/hotels/populate/
+GET {{url}}/haikus/populate/
 
 ### Create a new user - this one will only get a USER role by default
 POST {{url}}/auth/register/
+Content-Type: application/json
 
 {
-    "username": "user",
-    "password": "test123"
+  "username": "user",
+  "password": "test123"
 }
 
 ###
 POST {{url}}/auth/login/
+Content-Type: application/json
 
 {
-    "username": "user",
-    "password": "test123"
+  "username": "user",
+  "password": "test123"
 }
 
 > {%
@@ -37,64 +39,69 @@ Authorization: Bearer {{jwt_token}}
 
 ### Add admin role to user
 POST {{url}}/auth/user/addrole/
-Accept: application/json
-Authorization: Bearer {{jwt_token}}
-
-{
-    "role": "admin"
-}
-Accept: application/json
-Authorization: Bearer {{jwt_token}}
-
-###
-GET {{url}}/hotels
-Accept: application/json
-Authorization: Bearer {{jwt_token}}
-
-###
-GET {{url}}/hotels/2
-
-###
-POST {{url}}/hotels
 Content-Type: application/json
 Authorization: Bearer {{jwt_token}}
 
 {
-  "hotelName": "Holiday Inn",
-  "hotelAddress": "Stuttgart",
-  "hotelType": "STANDARD"
+  "role": "admin"
 }
 
-###
-PUT {{url}}/hotels/3
-Content-Type: application/json
-
-{
-  "hotelName": "Ritz Carlton",
-  "hotelAddress": "London City",
-  "hotelType": "LUXURY"
-}
-
-###
-DELETE {{url}}/hotels/5
+### Get all haikus
+GET {{url}}/haikus
+Accept: application/json
 Authorization: Bearer {{jwt_token}}
 
-// Room API
-###
-GET {{url}}/rooms
+### Get a specific haiku by ID
+GET {{url}}/haikus/1
+Accept: application/json
 Authorization: Bearer {{jwt_token}}
 
-###
-GET {{url}}/rooms/1
-Authorization: Bearer {{jwt_token}}
 
-###
-POST {{url}}/rooms/hotel/1
+### Create a new haiku
+POST {{url}}/haikus
 Content-Type: application/json
 Authorization: Bearer {{jwt_token}}
 
 {
-  "roomNumber": 11,
-  "roomPrice": 1150,
-  "roomType": "SINGLE"
+  "author": "Matsuo Basho",
+  "dateCreated": "2023-10-01",
+  "user": {
+
+  },
+  "haikuParts": [
+    {
+      "id": 1
+    },
+    {
+      "id": 2
+    },
+    {
+      "id": 3
+    }
+  ]
 }
+
+### Update an existing haiku
+PUT {{url}}/haikus/1
+Content-Type: application/json
+Authorization: Bearer {{jwt_token}}
+
+{
+  "author": "Updated Author",
+  "dateCreated": "2023-10-02",
+  "user": {
+    "id": 1
+  },
+  "haikuParts": [
+    {
+      "id": 1
+    },
+    {
+      "id": 2
+    }
+  ]
+}
+
+### Delete a haiku by ID
+DELETE {{url}}/haikus/1
+Authorization: Bearer {{jwt_token}}

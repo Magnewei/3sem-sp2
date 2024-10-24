@@ -49,7 +49,17 @@ public class HaikuDAO implements IDAO<HaikuDTO, Integer> {
         try (EntityManager em = emf.createEntityManager()) {
             em.getTransaction().begin();
             Haiku haiku = new Haiku(haikuDTO);
-            em.persist(haiku);
+
+            // Save HaikuPart entities first
+            for (HaikuPart part : haiku.getHaikuParts()) {
+                if (part.getId() == null) {
+                    em.persist(part);
+                } else {
+                    em.merge(part);
+                }
+            }
+
+            Haiku mergedHaiku = em.merge(haiku); 
             em.getTransaction().commit();
             return new HaikuDTO(haiku);
         } catch (Exception e) {
@@ -101,3 +111,4 @@ public class HaikuDAO implements IDAO<HaikuDTO, Integer> {
         }
     }
 }
+
