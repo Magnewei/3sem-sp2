@@ -66,8 +66,6 @@ public class Haiku {
             List<Haiku> currentHaikus = haikuPart.getHaikus();
             currentHaikus.add(this);
             haikuPart.setHaikus(currentHaikus);
-
         }
     }
-
 }

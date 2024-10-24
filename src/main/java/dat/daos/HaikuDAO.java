@@ -50,7 +50,6 @@ public class HaikuDAO implements IDAO<HaikuDTO, Integer> {
             em.getTransaction().begin();
             Haiku haiku = new Haiku(haikuDTO);
 
-            // Save HaikuPart entities first
             for (HaikuPart part : haiku.getHaikuParts()) {
                 if (part.getId() == null) {
                     em.persist(part);
