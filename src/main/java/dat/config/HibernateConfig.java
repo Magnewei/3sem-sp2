@@ -1,7 +1,11 @@
 package dat.config;
 
+import dat.entities.Haiku;
+import dat.entities.HaikuPart;
 import dat.security.entities.Role;
 import dat.security.entities.User;
+import dat.entities.Collection;
+import dat.entities.Rating;
 import dat.utils.Utils;
 import jakarta.persistence.EntityManagerFactory;
 import org.hibernate.SessionFactory;
@@ -39,11 +43,11 @@ public class HibernateConfig {
     }
 
     private static void getAnnotationConfiguration(Configuration configuration) {
-        configuration.addAnnotatedClass(dat.entities.Haiku.class);
-        configuration.addAnnotatedClass(dat.entities.HaikuPart.class);
-        configuration.addAnnotatedClass(dat.entities.Rating.class);
-        configuration.addAnnotatedClass(dat.entities.Collection.class);
-        configuration.addAnnotatedClass(User.class);  // User entity taken from Security package.
+        configuration.addAnnotatedClass(Haiku.class);
+        configuration.addAnnotatedClass(HaikuPart.class);
+        configuration.addAnnotatedClass(Rating.class);
+        configuration.addAnnotatedClass(Collection.class);
+        configuration.addAnnotatedClass(User.class);  // User entity taken from Security layer.
         configuration.addAnnotatedClass(Role.class);
     }
 
