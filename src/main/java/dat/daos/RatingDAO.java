@@ -31,7 +31,7 @@ public class RatingDAO implements IDAO<RatingDTO, Long> {
             Rating rating = em.find(Rating.class, id);
             return new RatingDTO(rating);
         } catch (Exception e) {
-            throw new DatabaseException(500, "Error reading Rating from the database", e.getCause());
+            throw new DatabaseException(500, "Error reading Rating from the database", e.getMessage());
         }
     }
 
@@ -41,7 +41,7 @@ public class RatingDAO implements IDAO<RatingDTO, Long> {
             TypedQuery<RatingDTO> query = em.createQuery("SELECT new dat.dtos.RatingDTO(h) FROM Rating h", RatingDTO.class);
             return query.getResultList();
         } catch (Exception e) {
-            throw new DatabaseException(500, "Error reading Ratings from the database", e.getCause());
+            throw new DatabaseException(500, "Error reading Ratings from the database", e.getMessage());
         }
     }
 
@@ -51,14 +51,14 @@ public class RatingDAO implements IDAO<RatingDTO, Long> {
             em.getTransaction().begin();
             Haiku haiku = em.find(Haiku.class, ratingDTO.getHaikuId());
             if (haiku == null) {
-                throw new DatabaseException(404, "Haiku not found with id: " + ratingDTO.getHaikuId(), null);
+                throw new DatabaseException(404, "Haiku not found with id: " + ratingDTO.getHaikuId());
             }
             Rating rating = new Rating(ratingDTO, haiku);
             em.persist(rating);
             em.getTransaction().commit();
             return new RatingDTO(rating);
         } catch (Exception e) {
-            throw new DatabaseException(500, "Could not create rating", e.getCause());
+            throw new DatabaseException(500, "Could not create rating", e.getMessage());
         }
     }
 
@@ -69,7 +69,7 @@ public class RatingDAO implements IDAO<RatingDTO, Long> {
             Rating h = em.find(Rating.class, id);
 
             if (h == null) {
-                throw new DatabaseException(404, "Rating not found for update", null);
+                throw new DatabaseException(404, "Rating not found for update");
             }
             h.setScore(ratingDTO.getScore());
 
@@ -77,7 +77,7 @@ public class RatingDAO implements IDAO<RatingDTO, Long> {
             em.getTransaction().commit();
             return mergedRating != null ? new RatingDTO(mergedRating) : null;
         } catch (Exception e) {
-            throw new DatabaseException(500, "Error updating rating", e.getCause());
+            throw new DatabaseException(500, "Error updating rating", e.getMessage());
         }
     }
 
@@ -87,12 +87,12 @@ public class RatingDAO implements IDAO<RatingDTO, Long> {
             em.getTransaction().begin();
             Rating rating = em.find(Rating.class, id);
             if (rating == null) {
-                throw new DatabaseException(404, "Rating not found for deletion", null);
+                throw new DatabaseException(404, "Rating not found for deletion");
             }
             em.remove(rating);
             em.getTransaction().commit();
         } catch (Exception e) {
-            throw new DatabaseException(500, "Error deleting rating", e.getCause());
+            throw new DatabaseException(500, "Error deleting rating", e.getMessage());
         }
     }
 
@@ -102,7 +102,7 @@ public class RatingDAO implements IDAO<RatingDTO, Long> {
             Rating rating = em.find(Rating.class, id);
             return rating != null;
         } catch (Exception e) {
-            throw new DatabaseException(500, "Error validating primary key", e.getCause());
+            throw new DatabaseException(500, "Error validating primary key", e.getMessage());
         }
     }
 }

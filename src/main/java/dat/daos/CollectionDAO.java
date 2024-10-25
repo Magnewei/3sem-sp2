@@ -30,7 +30,7 @@ public class CollectionDAO implements IDAO<CollectionDTO, Long> {
             Collection collection = em.find(Collection.class, id);
             return new CollectionDTO(collection);
         } catch (Exception e) {
-            throw new DatabaseException(500, "Error reading collection from the database", e.getCause());
+            throw new DatabaseException(500, "Error reading collection from the database", e.getMessage());
         }
     }
 
@@ -40,7 +40,7 @@ public class CollectionDAO implements IDAO<CollectionDTO, Long> {
             TypedQuery<CollectionDTO> query = em.createQuery("SELECT new dat.dtos.CollectionDTO(c) FROM Collection c", CollectionDTO.class);
             return query.getResultList();
         } catch (Exception e) {
-            throw new DatabaseException(500, "Error reading collections from the database", e.getCause());
+            throw new DatabaseException(500, "Error reading collections from the database", e.getMessage());
         }
     }
 
@@ -53,7 +53,7 @@ public class CollectionDAO implements IDAO<CollectionDTO, Long> {
             em.getTransaction().commit();
             return new CollectionDTO(collection);
         } catch (Exception e) {
-            throw new DatabaseException(500, "Error creating collection", e.getCause());
+            throw new DatabaseException(500, "Error creating collection", e.getMessage());
         }
     }
 
@@ -71,7 +71,7 @@ public class CollectionDAO implements IDAO<CollectionDTO, Long> {
             em.getTransaction().commit();
             return new CollectionDTO(mergedCollection);
         } catch (Exception e) {
-            throw new DatabaseException(500, "Error updating collection", e.getCause());
+            throw new DatabaseException(500, "Error updating collection", e.getMessage());
         }
     }
 
@@ -81,12 +81,12 @@ public class CollectionDAO implements IDAO<CollectionDTO, Long> {
             em.getTransaction().begin();
             Collection collection = em.find(Collection.class, id);
             if (collection == null) {
-                throw new DatabaseException(404, "Collection not found for deletion", null);
+                throw new DatabaseException(404, "Collection not found for deletion");
             }
             em.remove(collection);
             em.getTransaction().commit();
         } catch (Exception e) {
-            throw new DatabaseException(500, "Error deleting collection", e.getCause());
+            throw new DatabaseException(500, "Error deleting collection", e.getMessage());
         }
     }
 
@@ -96,7 +96,7 @@ public class CollectionDAO implements IDAO<CollectionDTO, Long> {
             Collection collection = em.find(Collection.class, id);
             return collection != null;
         } catch (Exception e) {
-            throw new DatabaseException(500, "Error validating primary key", e.getCause());
+            throw new DatabaseException(500, "Error validating primary key", e.getMessage());
         }
     }
 }

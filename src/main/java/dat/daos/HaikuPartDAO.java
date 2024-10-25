@@ -37,7 +37,7 @@ public class HaikuPartDAO implements IDAO<HaikuPartDTO, Long> {
             em.getTransaction().commit();
             return new HaikuDTO(mergedHaiku);
         } catch (Exception e) {
-            throw new DatabaseException(500, "Error adding HaikuPart to Haiku", e.getCause());
+            throw new DatabaseException(500, "Error adding HaikuPart to Haiku", e.getMessage());
         }
     }
 
@@ -47,7 +47,7 @@ public class HaikuPartDAO implements IDAO<HaikuPartDTO, Long> {
             HaikuPart haikuPart = em.find(HaikuPart.class, id);
             return haikuPart != null ? new HaikuPartDTO(haikuPart) : null;
         } catch (Exception e) {
-            throw new DatabaseException(500, "Error reading HaikuPart from the database", e.getCause());
+            throw new DatabaseException(500, "Error reading HaikuPart from the database", e.getMessage());
         }
     }
 
@@ -57,7 +57,7 @@ public class HaikuPartDAO implements IDAO<HaikuPartDTO, Long> {
             TypedQuery<HaikuPartDTO> query = em.createQuery("SELECT new dat.dtos.HaikuPartDTO(h) FROM HaikuPart h", HaikuPartDTO.class);
             return query.getResultList();
         } catch (Exception e) {
-            throw new DatabaseException(500, "Error reading HaikuParts from the database", e.getCause());
+            throw new DatabaseException(500, "Error reading HaikuParts from the database", e.getMessage());
         }
     }
 
@@ -70,7 +70,7 @@ public class HaikuPartDAO implements IDAO<HaikuPartDTO, Long> {
             em.getTransaction().commit();
             return new HaikuPartDTO(haikuPart);
         } catch (Exception e) {
-            throw new DatabaseException(500, "Error creating HaikuPart", e.getCause());
+            throw new DatabaseException(500, "Error creating HaikuPart", e.getMessage());
         }
     }
 
@@ -89,7 +89,7 @@ public class HaikuPartDAO implements IDAO<HaikuPartDTO, Long> {
             em.getTransaction().commit();
             return new HaikuPartDTO(mergedHaikuPart);
         } catch (Exception e) {
-            throw new DatabaseException(500, "Error updating HaikuPart", e.getCause());
+            throw new DatabaseException(500, "Error updating HaikuPart", e.getMessage());
         }
     }
 
@@ -105,7 +105,7 @@ public class HaikuPartDAO implements IDAO<HaikuPartDTO, Long> {
             }
             em.getTransaction().commit();
         } catch (Exception e) {
-            throw new DatabaseException(500, "Error deleting HaikuPart", e.getCause());
+            throw new DatabaseException(500, "Error deleting HaikuPart", e.getMessage());
         }
     }
 
@@ -115,7 +115,7 @@ public class HaikuPartDAO implements IDAO<HaikuPartDTO, Long> {
             HaikuPart haikuPart = em.find(HaikuPart.class, id);
             return haikuPart != null;
         } catch (Exception e) {
-            throw new DatabaseException(500, "Error validating primary key", e.getCause());
+            throw new DatabaseException(500, "Error validating primary key", e.getMessage());
         }
     }
 }

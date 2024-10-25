@@ -30,7 +30,7 @@ public class HaikuDAO implements IDAO<HaikuDTO, Long> {
             Haiku haiku = em.find(Haiku.class, id);
             return new HaikuDTO(haiku);
         } catch (Exception e) {
-            throw new DatabaseException(500, "Error reading haiku from the database", e.getCause());
+            throw new DatabaseException(500, "Error reading haiku from the database", e.getMessage());
         }
     }
 
@@ -40,7 +40,7 @@ public class HaikuDAO implements IDAO<HaikuDTO, Long> {
             TypedQuery<HaikuDTO> query = em.createQuery("SELECT new dat.dtos.HaikuDTO(h) FROM Haiku h", HaikuDTO.class);
             return query.getResultList();
         } catch (Exception e) {
-            throw new DatabaseException(500, "Error reading haikus from the database", e.getCause());
+            throw new DatabaseException(500, "Error reading haikus from the database", e.getMessage());
         }
     }
 
@@ -62,7 +62,7 @@ public class HaikuDAO implements IDAO<HaikuDTO, Long> {
             em.getTransaction().commit();
             return new HaikuDTO(haiku);
         } catch (Exception e) {
-            throw new DatabaseException(500, "Error creating haiku", e.getCause());
+            throw new DatabaseException(500, "Error creating haiku", e.getMessage());
         }
     }
 
@@ -72,7 +72,7 @@ public class HaikuDAO implements IDAO<HaikuDTO, Long> {
             em.getTransaction().begin();
             Haiku h = em.find(Haiku.class, id);
             if (h == null) {
-                throw new DatabaseException(404, "Haiku not found for update", null);
+                throw new DatabaseException(404, "Haiku not found for update");
             }
             h.setHaikuParts(haikuDTO.getHaikuParts().stream().map(HaikuPart::new).toList());
             h.setAuthor(haikuDTO.getAuthor());
@@ -81,7 +81,7 @@ public class HaikuDAO implements IDAO<HaikuDTO, Long> {
             em.getTransaction().commit();
             return new HaikuDTO(mergedHaiku);
         } catch (Exception e) {
-            throw new DatabaseException(500, "Error updating haiku", e.getCause());
+            throw new DatabaseException(500, "Error updating haiku", e.getMessage());
         }
     }
 
@@ -91,12 +91,12 @@ public class HaikuDAO implements IDAO<HaikuDTO, Long> {
             em.getTransaction().begin();
             Haiku haiku = em.find(Haiku.class, id);
             if (haiku == null) {
-                throw new DatabaseException(404, "Haiku not found for deletion", null);
+                throw new DatabaseException(404, "Haiku not found for deletion");
             }
             em.remove(haiku);
             em.getTransaction().commit();
         } catch (Exception e) {
-            throw new DatabaseException(500, "Error deleting haiku", e.getCause());
+            throw new DatabaseException(500, "Error deleting haiku", e.getMessage());
         }
     }
 
@@ -106,7 +106,7 @@ public class HaikuDAO implements IDAO<HaikuDTO, Long> {
             Haiku haiku = em.find(Haiku.class, id);
             return haiku != null;
         } catch (Exception e) {
-            throw new DatabaseException(500, "Error validating primary key", e.getCause());
+            throw new DatabaseException(500, "Error validating primary key", e.getMessage());
         }
     }
 }
