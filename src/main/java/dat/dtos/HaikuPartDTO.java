@@ -26,21 +26,21 @@ public class HaikuPartDTO {
         this.fiveSyllables = haikuParts.isFiveSyllables();
     }
 
-    public HaikuPartDTO(Long id, String content, boolean isFiveSyllables) {
+    public HaikuPartDTO(Long id, String content, boolean fiveSyllables) {
         if (id != null) this.id = id;
         this.content = content;
-        this.fiveSyllables = isFiveSyllables;
+        this.fiveSyllables = fiveSyllables;
     }
 
-    public HaikuPartDTO(String content, boolean isFiveSyllables) {
+    public HaikuPartDTO(String content, boolean fiveSyllables) {
         this.content = content;
-        this.fiveSyllables = isFiveSyllables;
+        this.fiveSyllables = fiveSyllables;
     }
 
-    public HaikuPartDTO(Long id, String content, boolean isFiveSyllables, List<Haiku> haikus) {
+    public HaikuPartDTO(Long id, String content, boolean fiveSyllables, List<Haiku> haikus) {
         if(id != null) this.id = id;
         this.content = content;
-        this.fiveSyllables = isFiveSyllables;
+        this.fiveSyllables = fiveSyllables;
         this.haikus = haikus;
     }
 
