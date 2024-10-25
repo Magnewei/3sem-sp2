@@ -22,7 +22,7 @@ public class CollectionDTO {
     private List<Haiku> haikus;
 
     public CollectionDTO(Collection collection) {
-        this.id = collection.getId();
+        if (collection.getId() != null) this.id = collection.getId();
         this.name = collection.getName();
         this.haikus = collection.getHaikus();
     }

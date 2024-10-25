@@ -51,7 +51,8 @@ public class Haiku {
     private Rating rating;
 
     public Haiku(HaikuDTO haikuDTO){
-        this.id=haikuDTO.getId();
+        if(haikuDTO.getId() != null) this.id=haikuDTO.getId();
+
         this.author=haikuDTO.getAuthor();
         this.dateCreated=haikuDTO.getDateCreated();
         this.user=haikuDTO.getUser();

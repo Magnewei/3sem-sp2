@@ -9,7 +9,7 @@ import jakarta.persistence.EntityManagerFactory;
 
 import java.util.List;
 
-public class HaikuController implements IController<HaikuDTO, Integer> {
+public class HaikuController implements IController<HaikuDTO, Long> {
 
     private final HaikuDAO dao;
 
@@ -20,7 +20,7 @@ public class HaikuController implements IController<HaikuDTO, Integer> {
 
     @Override
     public void read(Context ctx) {
-        int id = ctx.pathParamAsClass("id", Integer.class).check(this::validatePrimaryKey, "Not a valid id").get();
+        long id = ctx.pathParamAsClass("id", Long.class).check(this::validatePrimaryKey, "Not a valid id").get();
         HaikuDTO haikuDTO = dao.read(id);
         ctx.json(haikuDTO);
     }
@@ -40,21 +40,21 @@ public class HaikuController implements IController<HaikuDTO, Integer> {
 
     @Override
     public void update(Context ctx) {
-        int id = ctx.pathParamAsClass("id", Integer.class).check(this::validatePrimaryKey, "Not a valid id").get();
+        long id = ctx.pathParamAsClass("id", Long.class).check(this::validatePrimaryKey, "Not a valid id").get();
         HaikuDTO haikuDTO = dao.update(id, validateEntity(ctx));
         ctx.json(haikuDTO);
     }
 
     @Override
     public void delete(Context ctx) {
-        int id = ctx.pathParamAsClass("id", Integer.class).check(this::validatePrimaryKey, "Not a valid id").get();
+        long id = ctx.pathParamAsClass("id", Long.class).check(this::validatePrimaryKey, "Not a valid id").get();
         dao.delete(id);
         ctx.status(204);
     }
 
     @Override
-    public boolean validatePrimaryKey(Integer integer) {
-        return dao.validatePrimaryKey(integer);
+    public boolean validatePrimaryKey(Long id) {
+        return dao.validatePrimaryKey(id);
     }
 
     @Override
@@ -63,6 +63,8 @@ public class HaikuController implements IController<HaikuDTO, Integer> {
                 .check(h -> h.getAuthor() != null && !h.getAuthor().isEmpty(), "Haiku author must be set")
                 .check(h -> h.getHaikuParts() != null && !h.getHaikuParts().isEmpty(), "Haiku parts must be set")
                 .check(h -> h.getDateCreated() != null, "Haiku creation date must be set")
+                .check(h -> h.getUser() != null, "Haiku user must be set")
+                .check(h -> h.getRating() != null, "Haiku rating must be set")
                 .get();
     }
 }

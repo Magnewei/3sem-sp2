@@ -13,7 +13,7 @@ import lombok.NoArgsConstructor;
 import java.util.List;
 
 @NoArgsConstructor(access = lombok.AccessLevel.PRIVATE)
-public class HaikuPartDAO implements IDAO<HaikuPartDTO, Integer> {
+public class HaikuPartDAO implements IDAO<HaikuPartDTO, Long> {
 
     private static HaikuPartDAO instance;
     private static EntityManagerFactory emf;
@@ -26,7 +26,7 @@ public class HaikuPartDAO implements IDAO<HaikuPartDTO, Integer> {
         return instance;
     }
 
-    public HaikuDTO addHaikuPartToHaiku(Integer id, HaikuPartDTO haikuPartDTO ) {
+    public HaikuDTO addHaikuPartToHaiku(Long id, HaikuPartDTO haikuPartDTO ) {
         try (EntityManager em = emf.createEntityManager()) {
             em.getTransaction().begin();
             HaikuPart haikuPart = new HaikuPart(haikuPartDTO);
@@ -42,9 +42,9 @@ public class HaikuPartDAO implements IDAO<HaikuPartDTO, Integer> {
     }
 
     @Override
-    public HaikuPartDTO read(Integer integer) {
+    public HaikuPartDTO read(Long id) {
         try (EntityManager em = emf.createEntityManager()) {
-            HaikuPart haikuPart = em.find(HaikuPart.class, integer);
+            HaikuPart haikuPart = em.find(HaikuPart.class, id);
             return haikuPart != null ? new HaikuPartDTO(haikuPart) : null;
         } catch (Exception e) {
             throw new DatabaseException(500, "Error reading HaikuPart from the database", e.getCause());
@@ -75,10 +75,10 @@ public class HaikuPartDAO implements IDAO<HaikuPartDTO, Integer> {
     }
 
     @Override
-    public HaikuPartDTO update(Integer integer, HaikuPartDTO haikuPartDTO) {
+    public HaikuPartDTO update(Long id, HaikuPartDTO haikuPartDTO) {
         try (EntityManager em = emf.createEntityManager()) {
             em.getTransaction().begin();
-            HaikuPart h = em.find(HaikuPart.class, integer);
+            HaikuPart h = em.find(HaikuPart.class, id);
             if (h == null) {
                 throw new DatabaseException(404, "HaikuPart not found for update", null);
             }
@@ -94,10 +94,10 @@ public class HaikuPartDAO implements IDAO<HaikuPartDTO, Integer> {
     }
 
     @Override
-    public void delete(Integer integer) {
+    public void delete(Long id) {
         try (EntityManager em = emf.createEntityManager()) {
             em.getTransaction().begin();
-            HaikuPart haikuPart = em.find(HaikuPart.class, integer);
+            HaikuPart haikuPart = em.find(HaikuPart.class, id);
             if (haikuPart != null) {
                 em.remove(haikuPart);
             } else {
@@ -110,9 +110,9 @@ public class HaikuPartDAO implements IDAO<HaikuPartDTO, Integer> {
     }
 
     @Override
-    public boolean validatePrimaryKey(Integer integer) {
+    public boolean validatePrimaryKey(Long id) {
         try (EntityManager em = emf.createEntityManager()) {
-            HaikuPart haikuPart = em.find(HaikuPart.class, integer);
+            HaikuPart haikuPart = em.find(HaikuPart.class, id);
             return haikuPart != null;
         } catch (Exception e) {
             throw new DatabaseException(500, "Error validating primary key", e.getCause());

@@ -24,7 +24,7 @@ import java.util.List;
 public class Collection {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+    private Long id;
 
     @Column(nullable = false)
     private String name;
@@ -33,7 +33,7 @@ public class Collection {
     private List<Haiku> haikus = new ArrayList<>();
 
     public Collection(CollectionDTO collectionDTO) {
-        this.id = collectionDTO.getId();
+        if (collectionDTO.getId() != null) this.id = collectionDTO.getId();
         this.name = collectionDTO.getName();
         this.haikus = collectionDTO.getHaikus();
     }
