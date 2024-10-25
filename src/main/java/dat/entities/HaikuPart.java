@@ -41,9 +41,9 @@ public class HaikuPart {
         this.fiveSyllables = part.isFiveSyllables();
     }
 
-    public HaikuPart(long l, String aLightSnowfall, boolean b) {
-        this.id = l;
-        this.content = aLightSnowfall;
-        this.fiveSyllables = b;
+    public HaikuPart(long id, String content, boolean fiveSyllables) {
+        this.id = id;
+        this.content = content;
+        this.fiveSyllables = fiveSyllables;
     }
 }
