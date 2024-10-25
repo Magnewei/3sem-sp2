@@ -8,7 +8,7 @@ public class DatabaseException extends RuntimeException {
     private final int statusCode;
 
     public DatabaseException(int statusCode, String message, Throwable errorMessage) {
-        super(message);
+        super(message + ": " + errorMessage.getMessage());
         this.statusCode = statusCode;
         this.errorMessage = String.valueOf(errorMessage);
     }
