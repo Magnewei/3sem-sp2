@@ -26,21 +26,6 @@ public class HaikuPartDAO implements IDAO<HaikuPartDTO, Long> {
         return instance;
     }
 
-    public HaikuDTO addHaikuPartToHaiku(Long id, HaikuPartDTO haikuPartDTO ) {
-        try (EntityManager em = emf.createEntityManager()) {
-            em.getTransaction().begin();
-            HaikuPart haikuPart = new HaikuPart(haikuPartDTO);
-            Haiku haiku = em.find(Haiku.class, id);
-            haiku.addHaikuPart(haikuPart);
-            em.persist(haikuPart);
-            Haiku mergedHaiku = em.merge(haiku);
-            em.getTransaction().commit();
-            return new HaikuDTO(mergedHaiku);
-        } catch (Exception e) {
-            throw new DatabaseException(500, "Error adding HaikuPart to Haiku", e.getMessage());
-        }
-    }
-
     @Override
     public HaikuPartDTO read(Long id) {
         try (EntityManager em = emf.createEntityManager()) {
@@ -84,7 +69,6 @@ public class HaikuPartDAO implements IDAO<HaikuPartDTO, Long> {
             }
             h.setContent(haikuPartDTO.getContent());
             h.setFiveSyllables(haikuPartDTO.isFiveSyllables());
-            h.setHaikus(haikuPartDTO.getHaikus());
             HaikuPart mergedHaikuPart = em.merge(h);
             em.getTransaction().commit();
             return new HaikuPartDTO(mergedHaikuPart);

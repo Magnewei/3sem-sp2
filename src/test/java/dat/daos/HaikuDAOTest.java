@@ -23,36 +23,17 @@ class HaikuDAOTest {
 
     @BeforeAll
     void beforeAll() {
-        HibernateConfig.setTest(true);
         EntityManagerFactory emf = HibernateConfig.getEntityManagerFactoryForTest();
         haikuDAO = HaikuDAO.getInstance(emf);
     }
 
     @BeforeEach
     void beforeEach() {
-        User user = null;
-
-        HaikuPartDTO part1 = HaikuPartDTO.builder()
-                .content("Line 1")
-                .isFiveSyllables(true)
-                .build();
-
-        HaikuPartDTO part2 = HaikuPartDTO.builder()
-                .content("Line 2")
-                .isFiveSyllables(false)
-                .build();
-
-        haikuDTO = HaikuDTO.builder()
-                .user(user)
-                .author("Test Author")
-                .dateCreated(LocalDate.of(2023, 1, 1))
-                .haikuParts(List.of(part1, part2))
-                .build();
-
-        part2.setHaikus(List.of(new Haiku(haikuDTO)));
-        part1.setHaikus(List.of(new Haiku(haikuDTO)));
-
+        haikuDTO = new HaikuDTO();
+        haikuDTO.setAuthor("Test Author");
+        haikuDTO.setDateCreated(LocalDate.now());
         haikuDTO = haikuDAO.create(haikuDTO);
+
     }
 
     @AfterEach

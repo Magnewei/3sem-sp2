@@ -50,11 +50,13 @@ public class HaikuDAO implements IDAO<HaikuDTO, Long> {
             em.getTransaction().begin();
             Haiku haiku = new Haiku(haikuDTO);
 
-            for (HaikuPart part : haiku.getHaikuParts()) {
-                if (part.getId() == null) {
-                    em.persist(part);
-                } else {
-                    em.merge(part);
+            if (haiku.getHaikuParts() != null) {
+                for (HaikuPart part : haiku.getHaikuParts()) {
+                    if (part.getId() == null) {
+                        em.persist(part);
+                    } else {
+                        em.merge(part);
+                    }
                 }
             }
 

@@ -19,9 +19,9 @@ public class Populate {
 
         try {
             em.getTransaction().begin();
-            Haiku haiku = createVanillaHaiku();
+            //Haiku haiku = createVanillaHaiku();
             HaikuDAO dao = HaikuDAO.getInstance(emf);
-            dao.create(new HaikuDTO(haiku));
+            //dao.create(new HaikuDTO(haiku));
             em.getTransaction().commit();
         } catch (Exception e) {
             if (em.getTransaction().isActive()) {
@@ -32,7 +32,7 @@ public class Populate {
             em.close();
         }
     }
-
+/*
     @NotNull
     private static Haiku createVanillaHaiku() {
         List<HaikuPartDTO> haikuParts = new ArrayList<>();
@@ -44,4 +44,6 @@ public class Populate {
         return new Haiku(haiku);
 
     }
+
+ */
 }

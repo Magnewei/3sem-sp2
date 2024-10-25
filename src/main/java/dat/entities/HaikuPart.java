@@ -6,9 +6,10 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.Cascade;
 
+import java.util.ArrayList;
 import java.util.List;
-
 
 @Data
 @NoArgsConstructor
@@ -22,18 +23,14 @@ public class HaikuPart {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne
-    @JoinColumn(name = "haiku_id")
-    private Haiku haiku;
-
     @Column(nullable = false)
     private String content;
 
     @Column(nullable = false)
     private boolean isFiveSyllables;
 
-    @ManyToMany(mappedBy = "haikuParts")
-    private List<Haiku> haikus;
+    @ManyToMany(mappedBy = "haikuParts", cascade = {CascadeType.MERGE, CascadeType.REFRESH})
+    private List<Haiku> haikus = new ArrayList<>();
 
     public HaikuPart(HaikuPartDTO part) {
         if (part.getId() != null) this.id = part.getId();

@@ -12,7 +12,6 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
-
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -35,11 +34,11 @@ public class Haiku {
     @JoinColumn(name = "user_id")
     private User user;
 
-    @ManyToMany
+    @ManyToMany(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
     @JoinTable(
-            name = "haiku_haiku_parts", // Join table name
-            joinColumns = @JoinColumn(name = "haiku_id"), // Column for this entity (Haiku)
-            inverseJoinColumns = @JoinColumn(name = "haiku_parts_id") // Column for the other entity (HaikuParts)
+            name = "haiku_haiku_parts",
+            joinColumns = @JoinColumn(name = "haiku_id"),
+            inverseJoinColumns = @JoinColumn(name = "haiku_parts_id")
     )
     private List<HaikuPart> haikuParts = new ArrayList<>();
 
@@ -50,23 +49,13 @@ public class Haiku {
     @OneToOne(mappedBy = "haiku")
     private Rating rating;
 
-    public Haiku(HaikuDTO haikuDTO){
-        if(haikuDTO.getId() != null) this.id=haikuDTO.getId();
-
-        this.author=haikuDTO.getAuthor();
-        this.dateCreated=haikuDTO.getDateCreated();
-        this.user=haikuDTO.getUser();
+    public Haiku(HaikuDTO haikuDTO) {
+        this.author = haikuDTO.getAuthor();
+        this.dateCreated = haikuDTO.getDateCreated();
+        if (haikuDTO.getId() != null) this.id = haikuDTO.getId();
+        if (haikuDTO.getUser() != null) this.user = haikuDTO.getUser();
         if (haikuDTO.getHaikuParts() != null) {
-            haikuDTO.getHaikuParts().forEach( part -> haikuParts.add(new HaikuPart(part)));
-        }
-    }
-
-    public void addHaikuPart(HaikuPart haikuPart) {
-        if ( haikuPart != null) {
-            this.haikuParts.add(haikuPart);
-            List<Haiku> currentHaikus = haikuPart.getHaikus();
-            currentHaikus.add(this);
-            haikuPart.setHaikus(currentHaikus);
+            haikuDTO.getHaikuParts().forEach(part -> haikuParts.add(new HaikuPart(part)));
         }
     }
 }

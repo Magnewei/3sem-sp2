@@ -27,10 +27,15 @@ public class ExceptionController {
      * and before the method call reaches the controller to avoid wrong error codes being sent to the client.
      */
     public void databaseExceptionHandler(DatabaseException e, Context ctx) {
-        logger.error(ctx.attribute("requestInfo") + " " + ctx.res().getStatus() + " " + e.getMessage(), e.getCause());
+        String requestInfo = ctx.attribute("requestInfo");
+        String logMessage = String.format("%s %d %s", requestInfo, ctx.res().getStatus(), e.getMessage());
+        Throwable cause = e.getCause() != null ? e.getCause() : e;
+        logger.error(logMessage, cause);
+
         ctx.status(e.getStatusCode());
-        ctx.json(new ErrorMessage(e.getStatusCode(), (e.getMessage() + "Error: " + e.getErrorMessage())));
+        ctx.json(new ErrorMessage(e.getStatusCode(), String.format("%s Error: %s", e.getMessage(), e.getErrorMessage())));
     }
+
 
 
     /**
