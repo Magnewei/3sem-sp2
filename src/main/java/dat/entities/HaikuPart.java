@@ -36,7 +36,7 @@ public class HaikuPart {
     private List<Haiku> haikus;
 
     public HaikuPart(HaikuPartDTO part) {
-        this.id = part.getId();
+        if (part.getId() != null) this.id = part.getId();
         this.content = part.getContent();
         this.isFiveSyllables = part.isFiveSyllables();
     }

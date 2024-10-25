@@ -18,7 +18,7 @@ public class RatingDTO {
     private double originality;
 
     public RatingDTO(Rating rating) {
-        this.id = rating.getId();
+        if (rating.getId() != null) this.id = rating.getId();
         this.score = rating.getScore();
         this.haikuId = rating.getHaiku().getId();
         this.spicyness = rating.getSpicyness();
@@ -26,13 +26,13 @@ public class RatingDTO {
     }
 
     public RatingDTO(Long id, double rating, Long haikuId) {
-        this.id = id;
+        if(id != null) this.id = id;
         this.score = rating;
         this.haikuId = haikuId;
     }
 
     public RatingDTO(Long id, Long haikuId, double rating, double spicyness, double originality) {
-        this.id = id;
+        if(id != null) this.id = id;
         this.haikuId = haikuId;
         this.score = rating;
         this.spicyness = spicyness;

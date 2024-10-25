@@ -1,6 +1,6 @@
 package dat.dtos;
 
-import dat.entities.Haiku;;
+import dat.entities.Haiku;
 import dat.security.entities.User;
 import lombok.Builder;
 import lombok.Data;
@@ -10,6 +10,8 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
+
+;
 
 @Data
 @NoArgsConstructor
@@ -22,27 +24,26 @@ public class HaikuDTO {
     private User user;
     private RatingDTO rating;
 
-
     public HaikuDTO(Haiku haiku) {
-        this.id = haiku.getId();
+        if (haiku.getId() != null) this.id = haiku.getId();
         this.author = haiku.getAuthor();
         this.dateCreated = haiku.getDateCreated();
         this.user = haiku.getUser();
         if (haiku.getHaikuParts() != null) {
-            haiku.getHaikuParts().forEach( part -> haikuParts.add(new HaikuPartDTO(part)));
+            haiku.getHaikuParts().forEach(part -> haikuParts.add(new HaikuPartDTO(part)));
         }
         if (haiku.getRating() != null) {
             this.rating = new RatingDTO(haiku.getRating());
         }
     }
 
-    public HaikuDTO(Long id, List<HaikuPartDTO> haikuParts, String author, LocalDate dateCreated, User user,RatingDTO rating) {
-        this.id = id;
+    public HaikuDTO(Long id, List<HaikuPartDTO> haikuParts, String author, LocalDate dateCreated, User user, RatingDTO rating) {
+        if (id != null) this.id = id;
         this.haikuParts = haikuParts;
         this.author = author;
         this.dateCreated = dateCreated;
         this.user = user;
-        this.rating=rating;
+        this.rating = rating;
     }
 
 

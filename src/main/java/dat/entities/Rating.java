@@ -2,7 +2,10 @@ package dat.entities;
 
 import dat.dtos.RatingDTO;
 import jakarta.persistence.*;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Data
 @NoArgsConstructor
@@ -12,7 +15,7 @@ import lombok.*;
 public class Rating {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+    private Long id;
 
     @Column(nullable = false)
     private double score;
@@ -27,10 +30,9 @@ public class Rating {
     @JoinColumn(name = "haiku_id")
     private Haiku haiku;
 
-
-    public Rating(RatingDTO ratingDTO, Haiku haiku){
-        this.id=ratingDTO.getId();
-        this.score =ratingDTO.getScore();
+    public Rating(RatingDTO ratingDTO, Haiku haiku) {
+        if (ratingDTO.getId() != null) this.id = ratingDTO.getId();
+        this.score = ratingDTO.getScore();
         this.haiku = haiku;
     }
 }
