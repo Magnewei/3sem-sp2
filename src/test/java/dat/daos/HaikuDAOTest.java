@@ -76,13 +76,13 @@ class HaikuDAOTest {
     @AfterEach
     void tearDown() {
         if (haikuDTO != null) {
-            haikuDAO.delete(haikuDTO.getId().intValue());
+            haikuDAO.delete(haikuDTO.getId());
         }
     }
 
     @Test
     void read() {
-        HaikuDTO fetchedHaikuDTO = haikuDAO.read(haikuDTO.getId().intValue());
+        HaikuDTO fetchedHaikuDTO = haikuDAO.read(haikuDTO.getId());
 
         assertThat(fetchedHaikuDTO, is(notNullValue()));
         assertThat(fetchedHaikuDTO.getAuthor(), is("Test Author"));
@@ -120,13 +120,13 @@ class HaikuDAOTest {
         assertThat(createdHaiku.getAuthor(), is("New Author"));
         assertThat(createdHaiku.getHaikuParts(), hasSize(2));
 
-        haikuDAO.delete(createdHaiku.getId().intValue());
+        haikuDAO.delete(createdHaiku.getId());
     }
 
     @Test
     void update() {
         haikuDTO.setAuthor("Updated Author");
-        HaikuDTO updatedHaiku = haikuDAO.update(haikuDTO.getId().intValue(), haikuDTO);
+        HaikuDTO updatedHaiku = haikuDAO.update(haikuDTO.getId(), haikuDTO);
 
         assertThat(updatedHaiku, is(notNullValue()));
         assertThat(updatedHaiku.getAuthor(), is("Updated Author"));
@@ -134,9 +134,9 @@ class HaikuDAOTest {
 
     @Test
     void delete() {
-        haikuDAO.delete(haikuDTO.getId().intValue());
+        haikuDAO.delete(haikuDTO.getId());
 
-        HaikuDTO deletedHaiku = haikuDAO.read(haikuDTO.getId().intValue());
+        HaikuDTO deletedHaiku = haikuDAO.read(haikuDTO.getId());
         assertThat(deletedHaiku, is(nullValue()));
     }
 }

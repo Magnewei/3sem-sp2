@@ -12,7 +12,7 @@ import jakarta.persistence.TypedQuery;
 
 import java.util.List;
 
-public class RatingDAO implements IDAO<RatingDTO, Integer> {
+public class RatingDAO implements IDAO<RatingDTO, Long> {
 
     private static RatingDAO instance;
     private static EntityManagerFactory emf;
@@ -26,9 +26,9 @@ public class RatingDAO implements IDAO<RatingDTO, Integer> {
     }
 
     @Override
-    public RatingDTO read(Integer integer) {
+    public RatingDTO read(Long id) {
         try (EntityManager em = emf.createEntityManager()) {
-            Rating rating = em.find(Rating.class, integer);
+            Rating rating = em.find(Rating.class, id);
             return new RatingDTO(rating);
         } catch (Exception e) {
             throw new DatabaseException(500, "Error reading Rating from the database", e.getCause());
@@ -63,10 +63,10 @@ public class RatingDAO implements IDAO<RatingDTO, Integer> {
     }
 
     @Override
-    public RatingDTO update(Integer integer, RatingDTO ratingDTO) {
+    public RatingDTO update(Long id, RatingDTO ratingDTO) {
         try (EntityManager em = emf.createEntityManager()) {
             em.getTransaction().begin();
-            Rating h = em.find(Rating.class, integer);
+            Rating h = em.find(Rating.class, id);
 
             if (h == null) {
                 throw new DatabaseException(404, "Rating not found for update", null);
@@ -82,10 +82,10 @@ public class RatingDAO implements IDAO<RatingDTO, Integer> {
     }
 
     @Override
-    public void delete(Integer integer) {
+    public void delete(Long id) {
         try (EntityManager em = emf.createEntityManager()) {
             em.getTransaction().begin();
-            Rating rating = em.find(Rating.class, integer);
+            Rating rating = em.find(Rating.class, id);
             if (rating == null) {
                 throw new DatabaseException(404, "Rating not found for deletion", null);
             }
@@ -97,9 +97,9 @@ public class RatingDAO implements IDAO<RatingDTO, Integer> {
     }
 
     @Override
-    public boolean validatePrimaryKey(Integer integer) {
+    public boolean validatePrimaryKey(Long id) {
         try (EntityManager em = emf.createEntityManager()) {
-            Rating rating = em.find(Rating.class, integer);
+            Rating rating = em.find(Rating.class, id);
             return rating != null;
         } catch (Exception e) {
             throw new DatabaseException(500, "Error validating primary key", e.getCause());
