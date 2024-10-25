@@ -63,6 +63,8 @@ public class HaikuController implements IController<HaikuDTO, Long> {
                 .check(h -> h.getAuthor() != null && !h.getAuthor().isEmpty(), "Haiku author must be set")
                 .check(h -> h.getHaikuParts() != null && !h.getHaikuParts().isEmpty(), "Haiku parts must be set")
                 .check(h -> h.getDateCreated() != null, "Haiku creation date must be set")
+                .check(h -> h.getUser() != null, "Haiku user must be set")
+                .check(h -> h.getRating() != null, "Haiku rating must be set")
                 .get();
     }
 }

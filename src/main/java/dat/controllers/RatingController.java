@@ -63,6 +63,8 @@ public class RatingController implements IController<RatingDTO, Long> {
     public RatingDTO validateEntity(Context ctx) {
         return ctx.bodyValidator(RatingDTO.class)
                 .check(r -> r.getScore() >= 0 && r.getScore() <= 10, "Rating must be between 0 and 10")
+                .check(r -> r.getOriginality() >= 0 && r.getOriginality() <= 10, "Originality must be between 0 and 10")
+                .check(r -> r.getSpicyness() >= 0 && r.getSpicyness() <= 10, "Spicyness must be between 0 and 10")
                 .get();
     }
 
