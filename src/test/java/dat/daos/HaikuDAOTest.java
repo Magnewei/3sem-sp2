@@ -39,13 +39,13 @@ class HaikuDAOTest {
         HaikuPartDTO part1 = HaikuPartDTO.builder()
                 .id(1L)
                 .content("Line 1")
-                .isFiveSyllables(true)
+                .fiveSyllables(true)
                 .build();
 
         HaikuPartDTO part2 = HaikuPartDTO.builder()
                 .id(2L)
                 .content("Line 2")
-                .isFiveSyllables(false)
+                .fiveSyllables(false)
                 .build();
 
         haikuDTO = HaikuDTO.builder()
@@ -101,12 +101,12 @@ class HaikuDAOTest {
     void $create() {
         HaikuPartDTO part1 = HaikuPartDTO.builder()
                 .content("New Line 1")
-                .isFiveSyllables(true)
+                .fiveSyllables(true)
                 .build();
 
         HaikuPartDTO part2 = HaikuPartDTO.builder()
                 .content("New Line 2")
-                .isFiveSyllables(false)
+                .fiveSyllables(false)
                 .build();
 
         HaikuDTO newHaikuDTO = HaikuDTO.builder()

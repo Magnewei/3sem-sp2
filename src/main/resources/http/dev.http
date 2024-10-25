@@ -6,7 +6,6 @@ GET {{url}}/haikus/populate/
 
 ### Create a new user - this one will only get a USER role by default
 POST {{url}}/auth/register/
-Content-Type: application/json
 
 {
   "username": "user",
@@ -15,17 +14,13 @@ Content-Type: application/json
 
 ###
 POST {{url}}/auth/login/
-Content-Type: application/json
 
 {
   "username": "user",
   "password": "test123"
 }
 
-> {%
-    client.global.set("jwt_token", response.body.token);
-    console.log("JWT Token:", client.global.get("jwt_token"));
-%}
+> {% client.global.set("jwt_token", response.body.token); %}
 
 ###
 GET {{url}}/protected/user_demo/

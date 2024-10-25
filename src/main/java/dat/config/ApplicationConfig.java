@@ -55,4 +55,8 @@ public class ApplicationConfig {
         String requestInfo = ctx.req().getMethod() + " " + ctx.req().getRequestURI();
         logger.info(" Request {} - {} was handled with status code {}", count++, requestInfo, ctx.status());
     }
+
+    public static void stopServer(Javalin app) {
+        app.stop();
+    }
 }

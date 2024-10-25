@@ -29,8 +29,8 @@ public class HaikuPart {
     @Column(nullable = false)
     private String content;
 
-    @Column(nullable = false)
-    private boolean isFiveSyllables;
+    @Column(nullable = false, name = "fiveSyllables")
+    private boolean fiveSyllables;
 
     @ManyToMany(mappedBy = "haikuParts")
     private List<Haiku> haikus;
@@ -38,6 +38,12 @@ public class HaikuPart {
     public HaikuPart(HaikuPartDTO part) {
         if (part.getId() != null) this.id = part.getId();
         this.content = part.getContent();
-        this.isFiveSyllables = part.isFiveSyllables();
+        this.fiveSyllables = part.isFiveSyllables();
+    }
+
+    public HaikuPart(long l, String aLightSnowfall, boolean b) {
+        this.id = l;
+        this.content = aLightSnowfall;
+        this.fiveSyllables = b;
     }
 }

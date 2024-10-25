@@ -35,7 +35,7 @@ public class Haiku {
     @JoinColumn(name = "user_id")
     private User user;
 
-    @ManyToMany
+    @ManyToMany(cascade = CascadeType.PERSIST)
     @JoinTable(
             name = "haiku_haiku_parts", // Join table name
             joinColumns = @JoinColumn(name = "haiku_id"), // Column for this entity (Haiku)
@@ -43,12 +43,12 @@ public class Haiku {
     )
     private List<HaikuPart> haikuParts = new ArrayList<>();
 
+    @OneToOne(mappedBy = "haiku")
+    private Rating rating;
+
     @ManyToMany(cascade = CascadeType.PERSIST)
     @JoinColumn(name = "collection_id")
     private List<Collection> collections = new ArrayList<>();
-
-    @OneToOne(mappedBy = "haiku")
-    private Rating rating;
 
     public Haiku(HaikuDTO haikuDTO){
         if(haikuDTO.getId() != null) this.id=haikuDTO.getId();
@@ -59,6 +59,14 @@ public class Haiku {
         if (haikuDTO.getHaikuParts() != null) {
             haikuDTO.getHaikuParts().forEach( part -> haikuParts.add(new HaikuPart(part)));
         }
+    }
+
+    public Haiku(long id, String author, LocalDate dateCreated, User user, List<HaikuPart> haikuparts) {
+        this.id = id;
+        this.author = author;
+        this.dateCreated = dateCreated;
+        this.user = user;
+        this.haikuParts = haikuparts;
     }
 
     public void addHaikuPart(HaikuPart haikuPart) {

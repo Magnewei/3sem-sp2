@@ -14,8 +14,8 @@ public class HaikuRoute {
             post("/", haikuController::create, Role.ANYONE);
             get("/", haikuController::readAll, Role.ANYONE);
             get("/{id}", haikuController::read, Role.ANYONE);
-            put("/{id}", haikuController::update, Role.USER);
-            delete("/{id}", haikuController::delete, Role.ADMIN);
+            put("/{id}", haikuController::update, Role.ANYONE);
+            delete("/{id}", haikuController::delete, Role.ANYONE);
         };
     }
 }

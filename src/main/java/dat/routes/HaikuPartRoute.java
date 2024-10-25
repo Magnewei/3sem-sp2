@@ -11,11 +11,11 @@ public class HaikuPartRoute {
 
     protected EndpointGroup getRoutes() {
         return () -> {
-            post("/", haikuPartController::create, Role.USER);
+            post("/", haikuPartController::create, Role.ANYONE);
             get("/", haikuPartController::readAll, Role.ANYONE);
             get("/{id}", haikuPartController::read, Role.ANYONE);
-            put("/{id}", haikuPartController::update, Role.USER);
-            delete("/{id}", haikuPartController::delete, Role.ADMIN);
+            put("/{id}", haikuPartController::update, Role.ANYONE);
+            delete("/{id}", haikuPartController::delete, Role.ANYONE);
         };
     }
 }

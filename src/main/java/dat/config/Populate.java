@@ -40,7 +40,7 @@ public class Populate {
         haikuParts.add(new HaikuPartDTO("Bodies move in sultry waves", false));
         haikuParts.add(new HaikuPartDTO("Night surrenders slow", true));
       
-        HaikuDTO haiku = new HaikuDTO(0L, haikuParts, "Gods lesson", LocalDate.now(),null, new RatingDTO(0L, 5, 0L));
+        HaikuDTO haiku = new HaikuDTO(0L, "Gods lesson", LocalDate.now(),null, haikuParts);
         return new Haiku(haiku);
 
     }

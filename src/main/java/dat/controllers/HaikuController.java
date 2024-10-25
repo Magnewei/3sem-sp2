@@ -34,7 +34,9 @@ public class HaikuController implements IController<HaikuDTO, Long> {
     @Override
     public void create(Context ctx) {
         HaikuDTO jsonRequest = ctx.bodyAsClass(HaikuDTO.class);
+        System.out.println(jsonRequest);
         HaikuDTO haikuDTO = dao.create(jsonRequest);
+        System.out.println(haikuDTO);
         ctx.status(201).json(haikuDTO);
     }
 
