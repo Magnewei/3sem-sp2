@@ -17,30 +17,30 @@ import java.util.stream.Collectors;
 public class HaikuPartDTO {
     private Long id;
     private String content;
-    private boolean isFiveSyllables;
+    private boolean fiveSyllables;
     private List<Haiku> haikus;
 
     public HaikuPartDTO(HaikuPart haikuParts) {
         this.id = haikuParts.getId();
         this.content = haikuParts.getContent();
-        this.isFiveSyllables = haikuParts.isFiveSyllables();
+        this.fiveSyllables = haikuParts.isFiveSyllables();
     }
 
     public HaikuPartDTO(Long id, String content, boolean isFiveSyllables) {
         if (id != null) this.id = id;
         this.content = content;
-        this.isFiveSyllables = isFiveSyllables;
+        this.fiveSyllables = isFiveSyllables;
     }
 
     public HaikuPartDTO(String content, boolean isFiveSyllables) {
         this.content = content;
-        this.isFiveSyllables = isFiveSyllables;
+        this.fiveSyllables = isFiveSyllables;
     }
 
     public HaikuPartDTO(Long id, String content, boolean isFiveSyllables, List<Haiku> haikus) {
         if(id != null) this.id = id;
         this.content = content;
-        this.isFiveSyllables = isFiveSyllables;
+        this.fiveSyllables = isFiveSyllables;
         this.haikus = haikus;
     }
 

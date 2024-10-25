@@ -2,6 +2,7 @@ package dat.dtos;
 
 import dat.entities.Haiku;
 import dat.security.entities.User;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -15,14 +16,16 @@ import java.util.stream.Collectors;
 
 @Data
 @NoArgsConstructor
+@AllArgsConstructor
 @Builder
 public class HaikuDTO {
     private Long id;
-    private List<HaikuPartDTO> haikuParts = new ArrayList<>();
     private String author;
     private LocalDate dateCreated;
     private User user;
+    private List<HaikuPartDTO> haikuParts = new ArrayList<>();
     private RatingDTO rating;
+    private CollectionDTO collection;
 
     public HaikuDTO(Haiku haiku) {
         if (haiku.getId() != null) this.id = haiku.getId();
@@ -37,7 +40,7 @@ public class HaikuDTO {
         }
     }
 
-    public HaikuDTO(Long id, List<HaikuPartDTO> haikuParts, String author, LocalDate dateCreated, User user, RatingDTO rating) {
+    public HaikuDTO(Long id, String author, LocalDate dateCreated, User user, List<HaikuPartDTO> haikuParts) {
         if (id != null) this.id = id;
         this.haikuParts = haikuParts;
         this.author = author;
