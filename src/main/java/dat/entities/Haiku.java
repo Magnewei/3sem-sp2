@@ -47,7 +47,11 @@ public class Haiku {
     private Rating rating;
 
     @ManyToMany(cascade = CascadeType.PERSIST)
-    @JoinColumn(name = "collection_id")
+    @JoinTable(
+            name = "haiku_collections", // Join table name
+            joinColumns = @JoinColumn(name = "haiku_id"), // Column for Haiku
+            inverseJoinColumns = @JoinColumn(name = "collection_id") // Column for Collection
+    )
     private List<Collection> collections = new ArrayList<>();
 
     public Haiku(HaikuDTO haikuDTO){
