@@ -9,7 +9,7 @@ public class Main {
 
         ApplicationConfig.startServer(7070);
 
-        //Populate.main(args);
+
 
     }
 }
