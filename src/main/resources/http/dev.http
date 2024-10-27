@@ -80,16 +80,16 @@ Authorization: Bearer {{jwt_token}}
 }
 
 ### Update an existing haiku
-PUT {{url}}/haikus/1
+PUT {{url}}/haikus/2
 Content-Type: application/json
 Authorization: Bearer {{jwt_token}}
 
 {
   "dateCreated": "2023-10-02",
-  "user": "user",
+  "user": {
+    "username": "user"
+  },
   "author": "Le bron flames the second",
-
-
   "haikuParts": [
     {
       "id": 1,
@@ -103,8 +103,16 @@ Authorization: Bearer {{jwt_token}}
       "id": 3,
       "content": "An old silent pond 4..."
     }
-  ]
+  ],
+  "rating": {
+    "score": 4.5,
+    "spicyness": 3.0,
+    "originality": 4.0
+  }
 }
+
+
+
 
 ### Delete a haiku by ID
 DELETE {{url}}/haikus/1
