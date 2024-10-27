@@ -22,10 +22,6 @@ public class HaikuPart {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne
-    @JoinColumn(name = "haiku_id")
-    private Haiku haiku;
-
     @Column(nullable = false)
     private String content;
 
