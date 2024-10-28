@@ -19,10 +19,10 @@ public class RatingRoutes {
                 get("/{id}", ratingController::read, Role.USER);
                 put("/{id}", ratingController::update, Role.USER);
                 delete("/{id}", ratingController::delete, Role.ADMIN);
-                get("/popularity", haikuController::sortByScore, Role.ANYONE);
-                get("/originality", haikuController::sortByOriginality, Role.ANYONE);
-                get("/spicyness", haikuController::sortBySpicyness, Role.ANYONE);
-                get("/lowest", haikuController::getLowestRated, Role.ANYONE);
+                get("/sort/popularity", haikuController::sortByScore, Role.ANYONE);
+                get("/sort/originality", haikuController::sortByOriginality, Role.ANYONE);
+                get("/sort/spicyness", haikuController::sortBySpicyness, Role.ANYONE);
+                get("/sort/lowest", haikuController::getLowestRated, Role.ANYONE);
             };
         }
     }
