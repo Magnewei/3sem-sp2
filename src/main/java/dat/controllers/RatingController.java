@@ -1,7 +1,9 @@
 package dat.controllers;
 
 import dat.config.HibernateConfig;
+import dat.daos.HaikuDAO;
 import dat.daos.RatingDAO;
+import dat.dtos.HaikuDTO;
 import dat.dtos.RatingDTO;
 import dat.entities.Rating;
 import io.javalin.http.Context;
@@ -14,10 +16,12 @@ import java.util.List;
 public class RatingController implements IController<RatingDTO, Long> {
 
     private final RatingDAO dao;
+    private final HaikuDAO haikuDAO;
 
     public RatingController() {
         EntityManagerFactory emf = HibernateConfig.getEntityManagerFactory();
         this.dao = RatingDAO.getInstance(emf);
+        this.haikuDAO = HaikuDAO.getInstance(emf);
     }
 
     @Override
@@ -68,27 +72,8 @@ public class RatingController implements IController<RatingDTO, Long> {
                 .get();
     }
 
-    public void sortByPopularity(@NotNull Context context) {
-        List<RatingDTO> ratings = dao.readAll();
-        ratings.sort(Comparator.comparingDouble(RatingDTO::getScore).reversed());
-        context.json(ratings);
-    }
 
-    public void sortByOriginality(@NotNull Context context) {
-        List<RatingDTO> ratings = dao.readAll();
-        ratings.sort(Comparator.comparingDouble(RatingDTO::getOriginality).reversed());
-        context.json(ratings);
-    }
 
-    public void sortBySpicyness(@NotNull Context context) {
-        List<RatingDTO> ratings = dao.readAll();
-        ratings.sort(Comparator.comparingDouble(RatingDTO::getSpicyness).reversed());
-        context.json(ratings);
-    }
 
-    public void getLowestRated(@NotNull Context context) {
-        List<RatingDTO> ratings = dao.readAll();
-        ratings.sort(Comparator.comparingDouble(RatingDTO::getScore));
-        context.json(ratings);
-    }
+
 }
