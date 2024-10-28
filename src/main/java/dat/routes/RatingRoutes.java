@@ -1,5 +1,6 @@
 package dat.routes;
 
+import dat.controllers.HaikuController;
 import dat.controllers.RatingController;
 import dat.security.enums.Role;
 import io.javalin.apibuilder.EndpointGroup;
@@ -9,6 +10,7 @@ import static io.javalin.apibuilder.ApiBuilder.delete;
 
 public class RatingRoutes {
         private final RatingController ratingController = new RatingController();
+        private final HaikuController haikuController = new HaikuController();
 
         protected EndpointGroup getRoutes() {
             return () -> {
@@ -17,10 +19,10 @@ public class RatingRoutes {
                 get("/{id}", ratingController::read, Role.USER);
                 put("/{id}", ratingController::update, Role.USER);
                 delete("/{id}", ratingController::delete, Role.ADMIN);
-                get("/popularity", ratingController::sortByPopularity, Role.ANYONE);
-                get("/originality", ratingController::sortByOriginality, Role.ANYONE);
-                get("/spicyness", ratingController::sortBySpicyness, Role.ANYONE);
-                get("/lowest", ratingController::getLowestRated, Role.ANYONE);
+                get("/popularity", haikuController::sortByScore, Role.ANYONE);
+                get("/originality", haikuController::sortByOriginality, Role.ANYONE);
+                get("/spicyness", haikuController::sortBySpicyness, Role.ANYONE);
+                get("/lowest", haikuController::getLowestRated, Role.ANYONE);
             };
         }
     }

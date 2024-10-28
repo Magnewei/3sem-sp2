@@ -3,10 +3,13 @@ package dat.controllers;
 import dat.config.HibernateConfig;
 import dat.daos.HaikuDAO;
 import dat.dtos.HaikuDTO;
+import dat.dtos.RatingDTO;
 import dat.entities.Haiku;
 import io.javalin.http.Context;
 import jakarta.persistence.EntityManagerFactory;
+import org.jetbrains.annotations.NotNull;
 
+import java.util.Comparator;
 import java.util.List;
 
 public class HaikuController implements IController<HaikuDTO, Long> {
@@ -43,6 +46,7 @@ public class HaikuController implements IController<HaikuDTO, Long> {
     @Override
     public void update(Context ctx) {
         long id = ctx.pathParamAsClass("id", Long.class).check(this::validatePrimaryKey, "Not a valid id").get();
+        System.out.println("Incoming request body: " + ctx.body());
         HaikuDTO haikuDTO = dao.update(id, validateEntity(ctx));
         ctx.json(haikuDTO);
     }
@@ -68,5 +72,49 @@ public class HaikuController implements IController<HaikuDTO, Long> {
                 .check(h -> h.getUser() != null, "Haiku user must be set")
                 .check(h -> h.getRating() != null, "Haiku rating must be set")
                 .get();
+    }
+
+    public void sortByScore(@NotNull Context context) {
+        List<HaikuDTO> haikus = dao.readAll();
+
+        // Sort by the score in the rating, handling null ratings safely
+        haikus.sort(Comparator.comparingDouble(
+                (HaikuDTO haiku) -> haiku.getRating() != null ? haiku.getRating().getScore() : 0
+        ).reversed());
+
+        context.json(haikus);  // Return sorted haikus as JSON
+    }
+
+    public void sortByOriginality(@NotNull Context context) {
+        List<HaikuDTO> haikus = dao.readAll();
+
+        // Sort by the originality in the rating, handling null ratings safely
+        haikus.sort(Comparator.comparingDouble(
+                (HaikuDTO haiku) -> haiku.getRating() != null ? haiku.getRating().getOriginality() : 0
+        ).reversed());
+
+        context.json(haikus);  // Return sorted haikus as JSON
+    }
+
+    public void sortBySpicyness(@NotNull Context context) {
+        List<HaikuDTO> haikus = dao.readAll();
+
+        // Sort by the spicyness in the rating, handling null ratings safely
+        haikus.sort(Comparator.comparingDouble(
+                (HaikuDTO haiku) -> haiku.getRating() != null ? haiku.getRating().getSpicyness() : 0
+        ).reversed());
+
+        context.json(haikus);  // Return sorted haikus as JSON
+    }
+
+    public void getLowestRated(@NotNull Context context) {
+        List<HaikuDTO> haikus = dao.readAll();
+
+        // Sort by the score in the rating, handling null ratings safely
+        haikus.sort(Comparator.comparingDouble(
+                (HaikuDTO haiku) -> haiku.getRating() != null ? haiku.getRating().getScore() : 0
+        ));
+
+        context.json(haikus);  // Return sorted haikus as JSON
     }
 }
