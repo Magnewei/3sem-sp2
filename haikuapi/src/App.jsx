@@ -1,7 +1,7 @@
 import { Routes, Route } from "react-router-dom";
 import Header from "../components/Header";
 import Vision from "../components/Vision";
-import Endpoints from "../components/endpoints";
+import Endpoints from "../components/Endpoints";
 import styled from "styled-components";
 import GlobalLayout from "../components/GlobalLayout";
 
