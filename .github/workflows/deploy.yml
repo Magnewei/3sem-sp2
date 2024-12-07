@@ -42,10 +42,6 @@ jobs:
       - name: Sync files to DigitalOcean Droplet using rsync
         run: |
           # Define SSH connection info
-          working-directory: ./haikuapi
-          npm install
-          npm run build
-          
           SSH_USER="root"
           DO_DROPLET_IP="159.65.207.97"
           APP_NAME="haikuapi"
