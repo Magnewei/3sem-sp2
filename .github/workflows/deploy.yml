@@ -49,5 +49,5 @@ jobs:
 
           # Sync build output to the Droplet using rsync
           rsync -avz --delete -e "ssh -o StrictHostKeyChecking=no" ./dist/ $SSH_USER@$DO_DROPLET_IP:$REMOTE_PATH
-        working-directory: ./dist
+        working-directory: ./dist/
 
