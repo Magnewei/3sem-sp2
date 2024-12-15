@@ -13,13 +13,12 @@ POST {{url}}/auth/register/
 }
 
 ###
-POST {{url}}/auth/login/
+POST sp3api.magnewei.com/api/auth/login/
 
 {
   "username": "user",
   "password": "test123"
 }
-
 > {% client.global.set("jwt_token", response.body.token); %}
 
 ###
@@ -42,9 +41,8 @@ Authorization: Bearer {{jwt_token}}
 }
 
 ### Get all haikus
-GET {{url}}/haikus
+GET sp3api.magnewei.com/api/haikus
 Accept: application/json
-Authorization: Bearer {{jwt_token}}
 
 ### Get a specific haiku by ID
 GET {{url}}/haikus/1
@@ -55,7 +53,6 @@ Authorization: Bearer {{jwt_token}}
 ### Create a new haiku
 POST {{url}}/haikus
 Content-Type: application/json
-Authorization: Bearer {{jwt_token}}
 
 {
   "dateCreated": "2023-10-02",
@@ -80,7 +77,7 @@ Authorization: Bearer {{jwt_token}}
 }
 
 ### Update an existing haiku
-PUT {{url}}/haikus/1
+PUT sp3api.magnewei.com/api/haikus/1
 Content-Type: application/json
 Authorization: Bearer {{jwt_token}}
 

@@ -39,6 +39,7 @@ public class ApplicationConfig {
 
         app.beforeMatched(accessController::accessHandler);
 
+        /*
         // Add CORS Headers globally
         app.before(ctx -> {
             ctx.header("Access-Control-Allow-Origin", "*");
@@ -55,6 +56,8 @@ public class ApplicationConfig {
             ctx.header("Access-Control-Allow-Credentials", "true");
             ctx.status(204);
         });
+        
+         */
 
 
         app.beforeMatched(ctx -> accessController.accessHandler(ctx));
