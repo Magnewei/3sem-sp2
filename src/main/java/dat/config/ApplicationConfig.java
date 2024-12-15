@@ -39,6 +39,24 @@ public class ApplicationConfig {
 
         app.beforeMatched(accessController::accessHandler);
 
+        // Add CORS Headers globally
+        app.before(ctx -> {
+            ctx.header("Access-Control-Allow-Origin", "*");
+            ctx.header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
+            ctx.header("Access-Control-Allow-Headers", "Content-Type, Authorization");
+            ctx.header("Access-Control-Allow-Credentials", "true");
+        });
+
+        // Handle preflight OPTIONS requests explicitly
+        app.options("/*", ctx -> {
+            ctx.header("Access-Control-Allow-Origin", "*");
+            ctx.header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
+            ctx.header("Access-Control-Allow-Headers", "Content-Type, Authorization");
+            ctx.header("Access-Control-Allow-Credentials", "true");
+            ctx.status(204);
+        });
+
+
         app.beforeMatched(ctx -> accessController.accessHandler(ctx));
         app.after(ApplicationConfig::afterRequest);
 

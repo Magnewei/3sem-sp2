@@ -1,8 +1,8 @@
 ### Get all haikus
-GET haiku.antonstengaard.dk/api/haikus
+GET sp3api.magnewei.com/api/haikus
 
 ### Create a new user
-POST haiku.antonstengaard.dk/api/auth/register
+POST sp3api.magnewei.com/api/auth/register
 Content-Type: application/json
 
 {
@@ -11,7 +11,7 @@ Content-Type: application/json
 }
 
 ### Login request
-POST haiku.antonstengaard.dk/api/auth/login
+POST sp3api.magnewei.com/api/auth/login
 Content-Type: application/json
 
 {
@@ -34,30 +34,18 @@ Authorization: Bearer {{jwt_token}}
 }
 
 ### Create a new haiku
-POST haiku.antonstengaard.dk/api/haikus
+POST sp3api.magnewei.com/api/haikus
 Content-Type: application/json
 Accept: application/json
 Authorization: Bearer {{jwt_token}}
 
+
 {
-  "author": "Author Name",
-  "dateCreated": "2023-10-01",
-  "user": {
-    "id": 1,
-    "username": "newuser"
-  },
+  "author": "Author10",
+  "dateCreated": "2024-11-30",
   "haikuParts": [
-    {
-      "id": 1,
-      "content": "First part of the haiku"
-    },
-    {
-      "id": 2,
-      "content": "Second part of the haiku"
-    },
-    {
-      "id": 3,
-      "content": "Third part of the haiku"
-    }
+    { "content": "Morning dew sparkles", "fiveSyllables": true },
+    { "content": "On the blades of untouched grass", "fiveSyllables": false },
+    { "content": "Nature wakes softly.", "fiveSyllables": true }
   ]
 }
