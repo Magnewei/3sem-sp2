@@ -29,38 +29,35 @@ public class ApplicationConfig {
         config.showJavalinBanner = false;
         config.bundledPlugins.enableRouteOverview("/routes", Role.ANYONE);
         config.router.contextPath = "/api"; // base path for all endpoints
+        config.http.defaultContentType = "application/json";
         config.router.apiBuilder(routes.getRoutes());
         config.router.apiBuilder(SecurityRoutes.getSecuredRoutes());
         config.router.apiBuilder(SecurityRoutes.getSecurityRoutes());
+
+    }
+
+    private static void corsHeaders(Context ctx) {
+        ctx.header("Access-Control-Allow-Origin", "*");
+        ctx.header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
+        ctx.header("Access-Control-Allow-Headers", "Content-Type, Authorization");
+        ctx.header("Access-Control-Allow-Credentials", "true");
+    }
+
+    private static void corsHeadersOptions(Context ctx) {
+        ctx.header("Access-Control-Allow-Origin", "*");
+        ctx.header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
+        ctx.header("Access-Control-Allow-Headers", "Content-Type, Authorization");
+        ctx.header("Access-Control-Allow-Credentials", "true");
+        ctx.status(204);
     }
 
     public static Javalin startServer(int port) {
         Javalin app = Javalin.create(ApplicationConfig::configuration);
 
         app.beforeMatched(accessController::accessHandler);
-
-        /*
-        // Add CORS Headers globally
-        app.before(ctx -> {
-            ctx.header("Access-Control-Allow-Origin", "*");
-            ctx.header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
-            ctx.header("Access-Control-Allow-Headers", "Content-Type, Authorization");
-            ctx.header("Access-Control-Allow-Credentials", "true");
-        });
-
-        // Handle preflight OPTIONS requests explicitly
-        app.options("/*", ctx -> {
-            ctx.header("Access-Control-Allow-Origin", "*");
-            ctx.header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
-            ctx.header("Access-Control-Allow-Headers", "Content-Type, Authorization");
-            ctx.header("Access-Control-Allow-Credentials", "true");
-            ctx.status(204);
-        });
-        
-         */
-
-
         app.beforeMatched(ctx -> accessController.accessHandler(ctx));
+        app.before(ApplicationConfig::corsHeaders);
+        app.options("/*", ApplicationConfig::corsHeadersOptions);
         app.after(ApplicationConfig::afterRequest);
 
         // Exception handling
